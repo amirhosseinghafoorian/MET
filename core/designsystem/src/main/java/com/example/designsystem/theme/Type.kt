@@ -1,4 +1,4 @@
-package com.example.met.ui.theme
+package com.example.designsystem.theme
 
 import androidx.compose.material.Typography
 import androidx.compose.ui.text.TextStyle
