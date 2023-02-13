@@ -14,3 +14,10 @@ dependencyResolutionManagement {
 }
 rootProject.name = "Met"
 include ':app'
+include ':core:ui'
+include ':core:designsystem'
+include ':core:domain'
+include ':core:data'
+include ':core:common'
+include ':feature:feature-search'
+include ':feature:feature-detail'
