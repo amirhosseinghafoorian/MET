@@ -70,4 +70,8 @@ dependencies {
     api 'androidx.hilt:hilt-navigation-compose:1.0.0'
     kapt "androidx.hilt:hilt-compiler:1.0.0"
     kapt "com.google.dagger:hilt-android-compiler:2.43"
+
+    // windowSizeClass
+    api "androidx.compose.material3:material3:1.0.1"
+    api "androidx.compose.material3:material3-window-size-class:1.0.1"
 }
