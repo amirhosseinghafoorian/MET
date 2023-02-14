@@ -18,7 +18,7 @@ fun rememberBaseAppState(
     screenActionIcons: Map<String, Icon> = mapOf(),
     statusBarColors: Map<String, Color> = mapOf(),
     navigationBarColors: Map<String, Color> = mapOf(),
-    navigationIconInVisibleRoutes: Set<String> = setOf()
+    navigationIconVisibleRoutes: Set<String> = setOf()
 ): BaseAppState {
     val backgroundColor = MaterialTheme.colors.background
     return remember(
@@ -28,14 +28,14 @@ fun rememberBaseAppState(
         screenActionIcons,
         statusBarColors,
         navigationBarColors,
-        navigationIconInVisibleRoutes
+        navigationIconVisibleRoutes
     ) {
         BaseAppState(
             navController = navController,
             windowSizeClass = windowSizeClass,
             screenTitles = screenTitles,
             screenActionIcons = screenActionIcons,
-            navigationIconInVisibleRoutes = navigationIconInVisibleRoutes,
+            navigationIconVisibleRoutes = navigationIconVisibleRoutes,
             backgroundColor = backgroundColor
         )
     }
@@ -48,7 +48,7 @@ class BaseAppState(
     private val screenActionIcons: Map<String, Icon> = mapOf(),
     private val statusBarColors: Map<String, Color> = mapOf(),
     private val navigationBarColors: Map<String, Color> = mapOf(),
-    private val navigationIconInVisibleRoutes: Set<String> = setOf(),
+    private val navigationIconVisibleRoutes: Set<String> = setOf(),
     private val backgroundColor : Color
 ) {
     val currentRoute: String?
@@ -58,11 +58,11 @@ class BaseAppState(
     val titleTextId: Int?
         @Composable get() = currentRoute?.let { screenTitles[it] }
 
-    val actionIdonId: Icon?
+    val actionIcon: Icon?
         @Composable get() = currentRoute?.let { screenActionIcons[it] }
 
     val isNavigationIconVisible: Boolean
-        @Composable get() = currentRoute?.let { it !in navigationIconInVisibleRoutes } ?: true
+        @Composable get() = currentRoute?.let { it in navigationIconVisibleRoutes } ?: false
 
     val statusBarColor : Color
         @Composable get() = currentRoute?.let { statusBarColors[it] } ?: backgroundColor
