@@ -8,8 +8,8 @@ import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import com.example.feature_search.R
-import com.example.feature_search.SearchRoute
 import com.example.feature_search.navigation.SearchScreens.SearchScreenRoute
+import com.example.feature_search.search.SearchRoute
 import com.example.ui.base.BaseAppState
 import com.example.ui.base.rememberBaseAppState
 import com.example.ui.component.AppTopBar
@@ -62,7 +62,9 @@ fun SearchHost(
             composable(
                 route = SearchScreenRoute.route,
             ) {
-                SearchRoute()
+                SearchRoute {
+                    onSearchDetail(5)
+                }
             }
         }
     }

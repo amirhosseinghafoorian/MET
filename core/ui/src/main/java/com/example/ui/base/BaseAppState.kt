@@ -51,7 +51,7 @@ class BaseAppState(
     private val navigationIconVisibleRoutes: Set<String> = setOf(),
     private val backgroundColor : Color
 ) {
-    val currentRoute: String?
+    private val currentRoute: String?
         @Composable get() = navController
             .currentBackStackEntryAsState().value?.destination?.route
 

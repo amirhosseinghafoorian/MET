@@ -5,6 +5,8 @@ import androidx.compose.runtime.Composable
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.rememberNavController
+import com.example.feature_detail.navigation.detailNavGraph
+import com.example.feature_detail.navigation.generateDetailNavigationRoute
 import com.example.feature_search.navigation.searchNavGraph
 import com.example.feature_search.navigation.searchNavigationRoute
 
@@ -17,6 +19,11 @@ fun AppNavGraph(
         navController = navController,
         startDestination = searchNavigationRoute,
     ) {
-        searchNavGraph(windowSizeClass) { id -> }
+        searchNavGraph(windowSizeClass) { id ->
+            navController.navigate(
+                generateDetailNavigationRoute(id)
+            )
+        }
+        detailNavGraph(windowSizeClass) { navController.navigateUp() }
     }
 }
