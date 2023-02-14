@@ -13,7 +13,6 @@ import com.example.feature_search.search.SearchRoute
 import com.example.ui.base.BaseAppState
 import com.example.ui.base.rememberBaseAppState
 import com.example.ui.component.AppTopBar
-import com.example.ui.component.SystemUiControllerManager
 
 fun NavGraphBuilder.searchNavGraph(
     windowSizeClass: WindowSizeClass,
@@ -39,11 +38,6 @@ fun SearchHost(
     )
 ) {
     val scaffoldState = rememberScaffoldState()
-
-    SystemUiControllerManager(
-        statusBarColor = baseState.statusBarColor,
-        navigationBarColor = baseState.navigationBarColor
-    )
 
     Scaffold(
         scaffoldState = scaffoldState,

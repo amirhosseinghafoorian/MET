@@ -55,7 +55,11 @@ fun AppTopBar(
                         },
                     contentAlignment = Alignment.Center
                 ) {
-                    if (canNavigateBack) Icon(Icons.Default.ArrowBack, contentDescription = null)
+                    if (canNavigateBack) Icon(
+                        imageVector = Icons.Default.ArrowBack,
+                        contentDescription = null,
+                        tint = MaterialTheme.colors.onSurface
+                    )
                 }
 
                 WidthSpacer(MaterialTheme.spacing.medium)

@@ -14,9 +14,11 @@ fun MetApp(
     MetTheme {
         val systemUiController = rememberSystemUiController()
         val backgroundColor = MaterialTheme.colors.background
+        val surfaceColor = MaterialTheme.colors.surface
 
         SideEffect {
-            systemUiController.setSystemBarsColor(backgroundColor)
+            systemUiController.setStatusBarColor(surfaceColor)
+            systemUiController.setNavigationBarColor(backgroundColor)
         }
 
         AppNavGraph(windowSizeClass)

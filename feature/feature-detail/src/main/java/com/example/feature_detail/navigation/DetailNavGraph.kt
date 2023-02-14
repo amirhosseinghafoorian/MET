@@ -19,7 +19,6 @@ import com.example.feature_detail.show_image.ShowImageRoute
 import com.example.ui.base.BaseAppState
 import com.example.ui.base.rememberBaseAppState
 import com.example.ui.component.AppTopBar
-import com.example.ui.component.SystemUiControllerManager
 
 fun NavGraphBuilder.detailNavGraph(
     windowSizeClass: WindowSizeClass,
@@ -61,11 +60,6 @@ fun DetailHost(
 ) {
     val scaffoldState = rememberScaffoldState()
     val backStackEntry by baseState.navController.currentBackStackEntryAsState()
-
-    SystemUiControllerManager(
-        statusBarColor = baseState.statusBarColor,
-        navigationBarColor = baseState.navigationBarColor
-    )
 
     Scaffold(
         scaffoldState = scaffoldState,
