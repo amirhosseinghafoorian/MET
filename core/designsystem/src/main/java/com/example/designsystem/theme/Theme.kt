@@ -35,7 +35,10 @@ fun MetTheme(darkTheme: Boolean = isSystemInDarkTheme(), content: @Composable ()
         LightColorPalette
     }
 
-    CompositionLocalProvider(LocalSpacing provides Spacing()) {
+    CompositionLocalProvider(
+        LocalSpacing provides Spacing(),
+        LocalSizing provides Sizing()
+    ) {
         MaterialTheme(
             colors = colors,
             typography = Typography,

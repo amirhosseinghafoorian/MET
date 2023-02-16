@@ -56,8 +56,8 @@ fun SearchHost(
             composable(
                 route = SearchScreenRoute.route,
             ) {
-                SearchRoute {
-                    onSearchDetail(5)
+                SearchRoute { id ->
+                    onSearchDetail(id)
                 }
             }
         }

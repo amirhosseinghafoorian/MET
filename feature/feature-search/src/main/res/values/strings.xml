@@ -1,4 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="title_met">Met</string>
+
+    <string name="label_search_place_holder">Search anything ..</string>
 </resources>
