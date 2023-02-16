@@ -89,11 +89,15 @@ private fun SearchScreen(
                 placeholder = stringResource(R.string.label_search_place_holder),
                 leadingIcon = {
                     Icon(imageVector = Icons.Default.Search, contentDescription = null)
-                }
+                },
+                showError = false
             )
         }
 
-        items(uiState.objectIds) { id ->
+        items(
+            items = uiState.objectIds,
+            key = { it }
+        ) { id ->
             ObjectIdItem(id) {
                 onAction(OnObjectSelect(id))
             }
