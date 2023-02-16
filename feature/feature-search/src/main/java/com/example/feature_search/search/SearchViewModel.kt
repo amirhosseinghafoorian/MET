@@ -43,6 +43,13 @@ class SearchViewModel @Inject constructor(
         searchJob?.cancel()
         if (uiState.value.searchFieldState.validate()) {
             searchObjects(text)
+        } else {
+            updateState {
+                copy(
+                    isSearchLoading = false,
+                    objectIds = listOf()
+                )
+            }
         }
     }
 
@@ -57,7 +64,10 @@ class SearchViewModel @Inject constructor(
                     copy(objectIds = result.objectIDs)
                 }
             },
-            suspendJob = { searchJob = it }
+            suspendJob = { searchJob = it },
+            onLoading = { isLoading ->
+                updateState { copy(isSearchLoading = isLoading) }
+            }
         )
     }
 

@@ -9,6 +9,7 @@ import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.material.CircularProgressIndicator
 import androidx.compose.material.Icon
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.icons.Icons
@@ -94,12 +95,25 @@ private fun SearchScreen(
             )
         }
 
-        items(
-            items = uiState.objectIds,
-            key = { it }
-        ) { id ->
-            ObjectIdItem(id) {
-                onAction(OnObjectSelect(id))
+        if (uiState.isSearchLoading) {
+            item(span = { GridItemSpan(maxLineSpan) }) {
+                Box(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .height(MaterialTheme.sizing.medium),
+                    contentAlignment = Alignment.Center
+                ) {
+                    CircularProgressIndicator()
+                }
+            }
+        } else {
+            items(
+                items = uiState.objectIds,
+                key = { it }
+            ) { id ->
+                ObjectIdItem(id) {
+                    onAction(OnObjectSelect(id))
+                }
             }
         }
     }

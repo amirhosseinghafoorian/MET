@@ -5,5 +5,6 @@ import com.example.ui.text_field_util.TextFieldState
 
 data class SearchUiState(
     val objectIds : List<Int> = listOf(),
-    val searchFieldState : TextFieldState = BasicTextFieldState()
+    val searchFieldState : TextFieldState = BasicTextFieldState(),
+    val isSearchLoading : Boolean = false
 )
