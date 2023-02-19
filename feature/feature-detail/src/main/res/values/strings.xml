@@ -1,4 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="title_detail">Detail</string>
+
+    <string name="label_internet_problem_massage">Internet problem, tap to try again</string>
+    <string name="label_department">Department</string>
+    <string name="label_artist_name">Artist Name</string>
+    <string name="label_accession_number">Accession Number</string>
+    <string name="label_accession_year">Accession Year</string>
+    <string name="label_artist_role">Artist Role</string>
+    <string name="label_classification">Classification</string>
+    <string name="label_title">Title</string>
+    <string name="label_repository">Repository</string>
 </resources>

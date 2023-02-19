@@ -93,12 +93,24 @@ fun DetailHost(
             ) { navBackStackEntry ->
                 navBackStackEntry.arguments?.putInt(keyId, id)
 
-                DetailRoute()
+                DetailRoute { url ->
+                    baseState.navController.navigate(
+                        ShowImageScreenRoute.generateRoute(url)
+                    )
+                }
             }
             composable(
                 route = ShowImageScreenRoute.route,
-            ) {
-                ShowImageRoute()
+                arguments = listOf(
+                    navArgument(keyImage) {
+                        nullable = false
+                        type = NavType.StringType
+                    }
+                )
+            ) { navBackStackEntry ->
+                val imageUrl = navBackStackEntry.arguments?.getString(keyImage)
+
+                ShowImageRoute(imageUrl)
             }
         }
     }
