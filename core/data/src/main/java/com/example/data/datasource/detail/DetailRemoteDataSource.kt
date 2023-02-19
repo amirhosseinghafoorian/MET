@@ -1,3 +1,10 @@
 package com.example.data.datasource.detail
 
-interface DetailRemoteDataSource
+import com.example.data.model.GetObjectDetailResponse
+import retrofit2.Response
+
+interface DetailRemoteDataSource {
+
+    suspend fun getObjectDetail(id : Int) : Response<GetObjectDetailResponse>
+
+}
