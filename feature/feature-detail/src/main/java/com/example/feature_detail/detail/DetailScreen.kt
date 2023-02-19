@@ -22,6 +22,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.designsystem.theme.sizing
 import com.example.designsystem.theme.spacing
 import com.example.feature_detail.R
+import com.example.feature_detail.detail.DetailAction.TryAgain
 import com.example.ui.HeightSpacer
 import com.example.ui.WidthSpacer
 import com.example.ui.component.AppAsyncImage
@@ -132,17 +133,32 @@ private fun DetailScreen(
                     .fillMaxWidth()
                     .padding(MaterialTheme.spacing.medium),
             ) {
-                DetailItem(label = stringResource(R.string.label_accession_number), content = detail.accessionNumber)
+                DetailItem(
+                    label = stringResource(R.string.label_accession_number),
+                    content = detail.accessionNumber
+                )
 
-                DetailItem(label = stringResource(R.string.label_accession_year), content = detail.accessionYear)
+                DetailItem(
+                    label = stringResource(R.string.label_accession_year),
+                    content = detail.accessionYear
+                )
 
-                DetailItem(label = stringResource(R.string.label_artist_role), content = detail.artistRole)
+                DetailItem(
+                    label = stringResource(R.string.label_artist_role),
+                    content = detail.artistRole
+                )
 
-                DetailItem(label = stringResource(R.string.label_classification), content = detail.classification)
+                DetailItem(
+                    label = stringResource(R.string.label_classification),
+                    content = detail.classification
+                )
 
                 DetailItem(label = stringResource(R.string.label_title), content = detail.title)
 
-                DetailItem(label = stringResource(R.string.label_repository), content = detail.repository)
+                DetailItem(
+                    label = stringResource(R.string.label_repository),
+                    content = detail.repository
+                )
             }
         }
     } ?: run {
@@ -158,7 +174,7 @@ private fun DetailScreen(
                         color = MaterialTheme.colors.onBackground,
                         shape = MaterialTheme.shapes.large
                     )
-                    .clickable { }
+                    .clickable { onAction(TryAgain) }
                     .padding(
                         vertical = MaterialTheme.spacing.small,
                         horizontal = MaterialTheme.spacing.medium
