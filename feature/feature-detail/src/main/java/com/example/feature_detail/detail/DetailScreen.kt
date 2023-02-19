@@ -9,6 +9,7 @@ import androidx.compose.material.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -51,6 +52,10 @@ private fun DetailScreen(
     onImageSelect: (String) -> Unit // todo this should be moved to action
 ) {
     uiState.objectDetail?.let { detail ->
+        val showMiddleSection by derivedStateOf {
+            detail.department.isNotBlank() || detail.artistName.isNotBlank()
+        }
+
         Column(
             modifier = Modifier
                 .fillMaxSize()
@@ -83,38 +88,40 @@ private fun DetailScreen(
                 )
             }
 
-            Column(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .background(MaterialTheme.colors.surface)
-                    .padding(MaterialTheme.spacing.medium),
-            ) {
-                DetailItem(
-                    label = stringResource(R.string.label_department),
-                    content = detail.department,
-                    contentColor = MaterialTheme.colors.onSurface
-                )
+            if (showMiddleSection) {
+                Column(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .background(MaterialTheme.colors.surface)
+                        .padding(MaterialTheme.spacing.medium),
+                ) {
+                    DetailItem(
+                        label = stringResource(R.string.label_department),
+                        content = detail.department,
+                        contentColor = MaterialTheme.colors.onSurface
+                    )
 
-                DetailItem(
-                    label = stringResource(R.string.label_artist_name),
-                    content = detail.artistName,
-                    contentColor = MaterialTheme.colors.onSurface
-                )
+                    DetailItem(
+                        label = stringResource(R.string.label_artist_name),
+                        content = detail.artistName,
+                        contentColor = MaterialTheme.colors.onSurface
+                    )
 
-                detail.additionalImageUrls?.let { urls ->
-                    HeightSpacer(value = MaterialTheme.spacing.medium)
+                    detail.additionalImageUrls?.let { urls ->
+                        HeightSpacer(value = MaterialTheme.spacing.medium)
 
-                    LazyRow(modifier = Modifier.fillMaxWidth()) {
-                        items(urls) { url ->
-                            AppAsyncImage(
-                                imageUrl = url,
-                                modifier = Modifier
-                                    .size(MaterialTheme.sizing.small)
-                                    .clip(MaterialTheme.shapes.medium),
-                                onClick = onImageSelect
-                            )
+                        LazyRow(modifier = Modifier.fillMaxWidth()) {
+                            items(urls) { url ->
+                                AppAsyncImage(
+                                    imageUrl = url,
+                                    modifier = Modifier
+                                        .size(MaterialTheme.sizing.small)
+                                        .clip(MaterialTheme.shapes.medium),
+                                    onClick = onImageSelect
+                                )
 
-                            WidthSpacer(value = MaterialTheme.spacing.small)
+                                WidthSpacer(value = MaterialTheme.spacing.small)
+                            }
                         }
                     }
                 }
