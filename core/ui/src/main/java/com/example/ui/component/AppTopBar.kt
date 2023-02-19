@@ -10,15 +10,18 @@ import androidx.compose.material.Text
 import androidx.compose.material.TopAppBar
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
+import androidx.compose.material.icons.filled.ArrowForward
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalLayoutDirection
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.unit.LayoutDirection
 import androidx.compose.ui.unit.dp
 import com.example.designsystem.theme.spacing
 import com.example.ui.Icon
@@ -56,7 +59,9 @@ fun AppTopBar(
                     contentAlignment = Alignment.Center
                 ) {
                     if (canNavigateBack) Icon(
-                        imageVector = Icons.Default.ArrowBack,
+                        imageVector = if (LocalLayoutDirection.current == LayoutDirection.Ltr)
+                            Icons.Default.ArrowBack
+                        else Icons.Default.ArrowForward,
                         contentDescription = null,
                         tint = MaterialTheme.colors.onSurface
                     )
