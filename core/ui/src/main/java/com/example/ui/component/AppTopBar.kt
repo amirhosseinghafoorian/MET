@@ -22,7 +22,6 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.LayoutDirection
-import androidx.compose.ui.unit.dp
 import com.example.designsystem.theme.spacing
 import com.example.ui.Icon
 import com.example.ui.Icon.DrawableResourceIcon
@@ -51,7 +50,7 @@ fun AppTopBar(
 
                 Box(
                     modifier = Modifier
-                        .size(48.dp)
+                        .size(MaterialTheme.spacing.extraLarge)
                         .clip(MaterialTheme.shapes.medium)
                         .clickableIf(canNavigateBack) {
                             onNavigateUp?.invoke()
@@ -81,7 +80,7 @@ fun AppTopBar(
 
                 Box(
                     modifier = Modifier
-                        .size(48.dp)
+                        .size(MaterialTheme.spacing.extraLarge)
                         .clip(MaterialTheme.shapes.medium)
                         .clickableIf(actionIcon != null) {
                             onActionIconClick?.invoke()
