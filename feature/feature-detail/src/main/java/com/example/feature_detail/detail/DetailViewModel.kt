@@ -1,8 +1,13 @@
 package com.example.feature_detail.detail
 
+import android.os.Bundle
 import androidx.lifecycle.SavedStateHandle
+import com.example.common.AppConstants.keyId
 import com.example.domain.repository.DetailRepository
-import com.example.feature_detail.navigation.keyId
+import com.example.feature_detail.detail.DetailAction.ShowPicture
+import com.example.feature_detail.detail.DetailAction.TryAgain
+import com.example.feature_detail.navigation.keyImage
+import com.example.ui.base.BaseEffect
 import com.example.ui.base.BaseViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
@@ -18,15 +23,29 @@ class DetailViewModel @Inject constructor(
 ) {
 
     init {
+        initializeDetail()
+    }
+
+    override fun onAction(action: DetailAction) {
+        when (action) {
+            TryAgain -> {
+                initializeDetail()
+            }
+            is ShowPicture -> {
+                val navigateBundle = Bundle()
+                navigateBundle.putString(keyImage, action.url)
+
+                sendEffect(BaseEffect.Navigate(navigateBundle))
+            }
+        }
+    }
+
+    private fun initializeDetail() {
         uiState.value.objectId?.let { id ->
             getObjectDetail(id)
         } ?: run {
             updateState { copy(isUnknownError = true) }
         }
-    }
-
-    override fun onAction(action: DetailAction) {
-        TODO("Not yet implemented")
     }
 
     private fun getObjectDetail(id: Int) {

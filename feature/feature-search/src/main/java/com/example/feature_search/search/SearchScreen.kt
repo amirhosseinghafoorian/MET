@@ -12,44 +12,60 @@ import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.CircularProgressIndicator
 import androidx.compose.material.Icon
 import androidx.compose.material.MaterialTheme
+import androidx.compose.material.ScaffoldState
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.focus.FocusManager
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.hilt.navigation.compose.hiltViewModel
+import com.example.common.AppConstants.keyId
 import com.example.designsystem.theme.sizing
 import com.example.designsystem.theme.spacing
 import com.example.feature_search.R
 import com.example.feature_search.search.SearchAction.OnObjectSelect
 import com.example.feature_search.search.SearchAction.OnUpdateTextField
+import com.example.ui.base.BaseEffect.Navigate
+import com.example.ui.base.BaseEffect.ShowSnackBar
+import com.example.ui.component.AppEffectObserver
 import com.example.ui.component.AppTextField
-import kotlinx.coroutines.flow.collectLatest
+import com.example.ui.component.showAppSnackBar
 
 @Composable
 fun SearchRoute(
+    scaffoldState: ScaffoldState,
     viewModel: SearchViewModel = hiltViewModel(),
     onSearchDetail: (Int) -> Unit
 ) {
     val uiState by viewModel.uiState.collectAsState()
     val focusManager = LocalFocusManager.current
+    val context = LocalContext.current
 
-    LaunchedEffect(Unit) {
-        viewModel.confirmFlow.collectLatest { id ->
-            onSearchDetail(id)
+    AppEffectObserver(
+        effectFlow = viewModel.effectFlow,
+        onEffectReceived = { effect ->
+            if (effect is Navigate) {
+                effect.params?.let { bundle ->
+                    val id = bundle.getInt(keyId)
+
+                    onSearchDetail(id)
+                }
+            } else if (effect is ShowSnackBar) {
+                scaffoldState.showAppSnackBar(context, effect.snackBar)
+            }
         }
-    }
+    )
 
     SearchScreen(
         focusManager = focusManager,

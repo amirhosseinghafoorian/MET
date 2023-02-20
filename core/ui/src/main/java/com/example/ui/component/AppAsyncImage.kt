@@ -23,7 +23,7 @@ fun AppAsyncImage(
     modifier: Modifier = Modifier,
     imageUrl: String?,
     backgroundColor: Color = MaterialTheme.colors.background,
-    onClick: ((String) -> Unit)? = null
+    onClick: (() -> Unit)? = null
 ) {
     var imageState by remember {
         mutableStateOf<ImageState>(ImageState.Empty)
@@ -56,7 +56,7 @@ private fun AppAsyncImage(
     onSuccess: () -> Unit,
     onError: () -> Unit,
     onLoading: () -> Unit,
-    onClick: ((String) -> Unit)? = null
+    onClick: (() -> Unit)? = null
 ) {
 
     imageUrl?.let { url ->
@@ -70,7 +70,7 @@ private fun AppAsyncImage(
                     modifier = modifier.clickableIf(
                         imageState == ImageState.Success && onClick != null
                     ) {
-                        onClick?.invoke(url)
+                        onClick?.invoke()
                     },
                     onLoading = { onLoading() },
                     onSuccess = { onSuccess() },
