@@ -34,24 +34,10 @@ abstract class BaseViewModel<Action, State> constructor(initialState: State) : V
         }
     }
 
-    private suspend fun <R> runCatching(block: suspend () -> R): Result<R> {
-        return try {
-            Result.success(block())
-        } catch (e: Throwable) {
-            Result.failure(e)
-        }
-    }
-
-    private suspend fun <R> makeSuspendCall(block: suspend () -> R): Result<R> {
-        return withContext(Dispatchers.IO) {
-            runCatching(block)
-        }
-    }
-
     /**
      * It is used for calls that return a value
      */
-    protected fun <R> makeSuspendCall2(
+    protected fun <R> makeSuspendCall(
         block: suspend () -> R,
         onSuccess: ((R) -> Unit)? = null,
         onError: ((Exception) -> Unit)? = null,
@@ -63,16 +49,27 @@ abstract class BaseViewModel<Action, State> constructor(initialState: State) : V
         viewModelScope.launch(dispatcher) {
             onLoading?.invoke(true)
             try {
-                val result = async { block() }
-                onSuccess?.invoke(result.await())
-            } catch (e: Exception) {
-                if (showSnackbarOnError) {
-                    e.message?.let { errorMessage ->
-                        sendEffect(ShowSnackBar(errorMessage.toSnackBar()))
-                    }
+                val blockResult = async {
+                    runCatching { block() }
                 }
-                onError?.invoke(e)
+                val result = blockResult.await().getOrThrow()
+                onSuccess?.invoke(result)
+            } catch (e: IOException) {
+                if (showSnackbarOnError) {
+                    sendEffect(ShowSnackBar(com.example.ui.R.string.massage_internet_problem.toSnackBar()))
+                }
+                onError?.invoke(Exception(e.message, e.cause))
                 e.printStackTrace()
+            } catch (e: Exception) {
+                if (e !is CancellationException) {
+                    if (showSnackbarOnError) {
+                        e.message?.let { errorMessage ->
+                            sendEffect(ShowSnackBar(errorMessage.toSnackBar()))
+                        }
+                    }
+                    onError?.invoke(e)
+                    e.printStackTrace()
+                }
             } finally {
                 onLoading?.invoke(false)
             }
@@ -84,7 +81,7 @@ abstract class BaseViewModel<Action, State> constructor(initialState: State) : V
     /**
      * It is used for calls that don't return a value
      */
-    protected fun <R> makeSuspendCall2(
+    protected fun makeSuspendCall(
         block: suspend () -> Unit,
         onSuccess: (() -> Unit)? = null,
         onError: ((Exception) -> Unit)? = null,
@@ -98,44 +95,14 @@ abstract class BaseViewModel<Action, State> constructor(initialState: State) : V
             try {
                 block()
                 onSuccess?.invoke()
-            } catch (e: Exception) {
+            } catch (e: IOException) {
                 if (showSnackbarOnError) {
-                    e.message?.let { errorMessage ->
-                        sendEffect(ShowSnackBar(errorMessage.toSnackBar()))
-                    }
+                    sendEffect(ShowSnackBar(com.example.ui.R.string.massage_internet_problem.toSnackBar()))
                 }
-                onError?.invoke(e)
+                onError?.invoke(Exception(e.message, e.cause))
                 e.printStackTrace()
-            } finally {
-                onLoading?.invoke(false)
-            }
-        }.apply {
-            suspendJob?.invoke(this)
-        }
-    }
-
-    protected fun <R> makeSuspendCall(
-        block: suspend () -> R,
-        onSuccess: ((R) -> Unit)? = null,
-        onError: ((Exception) -> Unit)? = null,
-        onLoading: ((Boolean) -> Unit)? = null,
-        suspendJob: ((Job) -> Unit)? = null,
-        showSnackbarOnError: Boolean = true
-    ) {
-        viewModelScope.launch {
-
-            onLoading?.invoke(true)
-            makeSuspendCall(block).apply {
-                try {
-                    val result = getOrThrow()
-                    onSuccess?.invoke(result)
-                } catch (e: IOException) {
-                    if (showSnackbarOnError) {
-                        sendEffect(ShowSnackBar(com.example.ui.R.string.massage_internet_problem.toSnackBar()))
-                    }
-                    onError?.invoke(Exception(e.message, e.cause))
-                    e.printStackTrace()
-                } catch (e: Exception) {
+            } catch (e: Exception) {
+                if (e !is CancellationException) {
                     if (showSnackbarOnError) {
                         e.message?.let { errorMessage ->
                             sendEffect(ShowSnackBar(errorMessage.toSnackBar()))
@@ -143,9 +110,9 @@ abstract class BaseViewModel<Action, State> constructor(initialState: State) : V
                     }
                     onError?.invoke(e)
                     e.printStackTrace()
-                } finally {
-                    onLoading?.invoke(false)
                 }
+            } finally {
+                onLoading?.invoke(false)
             }
         }.apply {
             suspendJob?.invoke(this)

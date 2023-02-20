@@ -4,6 +4,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import com.example.ui.base.BaseEffect
 import kotlinx.coroutines.flow.SharedFlow
+import kotlinx.coroutines.flow.collectLatest
 
 @Composable
 fun AppEffectObserver(
@@ -11,7 +12,7 @@ fun AppEffectObserver(
     onEffectReceived: suspend (BaseEffect) -> Unit
 ) {
     LaunchedEffect(Unit) {
-        effectFlow.collect { effect ->
+        effectFlow.collectLatest { effect ->
             onEffectReceived(effect)
         }
     }

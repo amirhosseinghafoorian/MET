@@ -57,7 +57,7 @@ class SearchViewModel @Inject constructor(
             },
             onSuccess = { result ->
                 updateState {
-                    copy(objectIds = result.objectIDs)
+                    copy(objectIds = result.objectIDs ?: listOf())
                 }
             },
             suspendJob = { searchJob = it },
