@@ -1,16 +1,15 @@
 package com.example.feature_search.search
 
-import androidx.lifecycle.viewModelScope
+import android.os.Bundle
+import com.example.common.AppConstants.keyId
 import com.example.domain.repository.SearchRepository
 import com.example.feature_search.search.SearchAction.OnObjectSelect
 import com.example.feature_search.search.SearchAction.OnUpdateTextField
+import com.example.ui.base.BaseEffect.Navigate
 import com.example.ui.base.BaseViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
-import kotlinx.coroutines.flow.MutableSharedFlow
-import kotlinx.coroutines.flow.asSharedFlow
-import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
@@ -18,18 +17,15 @@ class SearchViewModel @Inject constructor(
     private val repository: SearchRepository
 ) : BaseViewModel<SearchAction, SearchUiState>(SearchUiState()) {
 
-    // todo this should be replaced with effect
-    private val _confirmFlow = MutableSharedFlow<Int>()
-    val confirmFlow = _confirmFlow.asSharedFlow()
-
     private var searchJob: Job? = null
 
     override fun onAction(action: SearchAction) {
         when (action) {
             is OnObjectSelect -> {
-                viewModelScope.launch {
-                    _confirmFlow.emit(action.id)
-                }
+                val navigateBundle = Bundle()
+                navigateBundle.putInt(keyId, action.id)
+
+                sendEffect(Navigate(navigateBundle))
             }
             is OnUpdateTextField -> {
                 updateTextField(action.text)

@@ -22,10 +22,14 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.designsystem.theme.sizing
 import com.example.designsystem.theme.spacing
 import com.example.feature_detail.R
+import com.example.feature_detail.detail.DetailAction.ShowPicture
 import com.example.feature_detail.detail.DetailAction.TryAgain
+import com.example.feature_detail.navigation.keyImage
 import com.example.ui.HeightSpacer
 import com.example.ui.WidthSpacer
+import com.example.ui.base.BaseEffect.Navigate
 import com.example.ui.component.AppAsyncImage
+import com.example.ui.component.AppEffectObserver
 import com.example.ui.dynamicShimmer
 
 @Composable
@@ -35,13 +39,25 @@ fun DetailRoute(
 ) {
     val uiState by viewModel.uiState.collectAsState()
 
+    AppEffectObserver(
+        effectFlow = viewModel.effectFlow,
+        onEffectReceived = { effect ->
+            if (effect is Navigate) {
+                effect.params?.let { bundle ->
+                    bundle.getString(keyImage)?.let { url ->
+                        onImageSelect(url)
+                    }
+                }
+            }
+        }
+    )
+
     if (uiState.isObjectDetailLoading) {
         DetailScreenShimmer()
     } else {
         DetailScreen(
             uiState = uiState,
             onAction = viewModel::submitAction,
-            onImageSelect = onImageSelect
         )
     }
 }
@@ -50,7 +66,6 @@ fun DetailRoute(
 private fun DetailScreen(
     uiState: DetailUiState,
     onAction: (DetailAction) -> Unit,
-    onImageSelect: (String) -> Unit // todo this should be moved to action
 ) {
     uiState.objectDetail?.let { detail ->
         val showMiddleSection by derivedStateOf {
@@ -76,7 +91,9 @@ private fun DetailScreen(
                             .size(MaterialTheme.sizing.small)
                             .clip(CircleShape),
                         backgroundColor = MaterialTheme.colors.onPrimary,
-                        onClick = onImageSelect
+                        onClick = {
+                            onAction(ShowPicture(url))
+                        }
                     )
 
                     WidthSpacer(value = MaterialTheme.spacing.medium)
@@ -118,7 +135,9 @@ private fun DetailScreen(
                                     modifier = Modifier
                                         .size(MaterialTheme.sizing.small)
                                         .clip(MaterialTheme.shapes.medium),
-                                    onClick = onImageSelect
+                                    onClick = {
+                                        onAction(ShowPicture(url))
+                                    }
                                 )
 
                                 WidthSpacer(value = MaterialTheme.spacing.small)

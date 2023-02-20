@@ -1,0 +1,20 @@
+package com.example.ui.component
+
+import android.content.Context
+import androidx.compose.material.ScaffoldState
+import com.example.ui.SnackBar
+
+suspend fun ScaffoldState.showAppSnackBar(
+    context: Context,
+    snackBar: SnackBar
+) {
+    when (snackBar) {
+        is SnackBar.StringResourceSnackBar -> {
+            val massage = context.getString(snackBar.id)
+            snackbarHostState.showSnackbar(massage)
+        }
+        is SnackBar.StringSnackBar -> {
+            snackbarHostState.showSnackbar(snackBar.massage)
+        }
+    }
+}

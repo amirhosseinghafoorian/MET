@@ -1,6 +1,7 @@
 package com.example.feature_detail.navigation
 
-const val keyId = "id"
+import com.example.common.AppConstants.keyId
+
 const val keyImage = "image"
 const val detailNavigationRoute = "navigation_detail?$keyId={id}"
 

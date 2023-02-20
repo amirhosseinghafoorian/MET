@@ -2,6 +2,8 @@ package com.example.ui.base
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.ui.base.BaseEffect.ShowSnackBar
+import com.example.ui.toSnackBar
 import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.*
 import java.io.IOException
@@ -9,8 +11,8 @@ import kotlin.coroutines.CoroutineContext
 
 abstract class BaseViewModel<Action, State> constructor(initialState: State) : ViewModel() {
 
-    private val _snackbarFlow = MutableSharedFlow<String>()
-    val snackbarFlow = _snackbarFlow.asSharedFlow()
+    private val _effectFlow = MutableSharedFlow<BaseEffect>()
+    val effectFlow = _effectFlow.asSharedFlow()
 
     private val state = MutableStateFlow(initialState)
     val uiState = state
@@ -26,9 +28,9 @@ abstract class BaseViewModel<Action, State> constructor(initialState: State) : V
 
     protected abstract fun onAction(action: Action)
 
-    protected fun showSnackbar(value: String) {
+    protected fun sendEffect(value: BaseEffect) {
         viewModelScope.launch {
-            _snackbarFlow.emit(value)
+            _effectFlow.emit(value)
         }
     }
 
@@ -66,7 +68,7 @@ abstract class BaseViewModel<Action, State> constructor(initialState: State) : V
             } catch (e: Exception) {
                 if (showSnackbarOnError) {
                     e.message?.let { errorMessage ->
-                        showSnackbar(errorMessage)
+                        sendEffect(ShowSnackBar(errorMessage.toSnackBar()))
                     }
                 }
                 onError?.invoke(e)
@@ -99,7 +101,7 @@ abstract class BaseViewModel<Action, State> constructor(initialState: State) : V
             } catch (e: Exception) {
                 if (showSnackbarOnError) {
                     e.message?.let { errorMessage ->
-                        showSnackbar(errorMessage)
+                        sendEffect(ShowSnackBar(errorMessage.toSnackBar()))
                     }
                 }
                 onError?.invoke(e)
@@ -128,13 +130,15 @@ abstract class BaseViewModel<Action, State> constructor(initialState: State) : V
                     val result = getOrThrow()
                     onSuccess?.invoke(result)
                 } catch (e: IOException) {
-                    if (showSnackbarOnError) showSnackbar("Internet connection problem")
-                    onError?.invoke(Exception("Internet connection problem", e.cause))
+                    if (showSnackbarOnError) {
+                        sendEffect(ShowSnackBar(com.example.ui.R.string.massage_internet_problem.toSnackBar()))
+                    }
+                    onError?.invoke(Exception(e.message, e.cause))
                     e.printStackTrace()
                 } catch (e: Exception) {
                     if (showSnackbarOnError) {
                         e.message?.let { errorMessage ->
-                            showSnackbar(errorMessage)
+                            sendEffect(ShowSnackBar(errorMessage.toSnackBar()))
                         }
                     }
                     onError?.invoke(e)
@@ -153,15 +157,4 @@ abstract class BaseViewModel<Action, State> constructor(initialState: State) : V
             update { value.newState(it) }
         }
     }
-
-    protected suspend fun updateStateWithDelay(
-        delay: Long,
-        newState: State.(State) -> State
-    ) {
-        delay(delay)
-        state.apply {
-            update { value.newState(it) }
-        }
-    }
-
 }
