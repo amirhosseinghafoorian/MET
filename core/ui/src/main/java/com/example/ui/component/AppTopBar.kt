@@ -2,7 +2,6 @@ package com.example.ui.component
 
 import androidx.annotation.StringRes
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.BoxScope
 import androidx.compose.foundation.layout.size
 import androidx.compose.material.Icon
 import androidx.compose.material.MaterialTheme
@@ -37,7 +36,6 @@ fun AppTopBar(
     backgroundColor: Color = MaterialTheme.colors.surface,
     @StringRes title: Int? = null,
     actionIcon: Icon? = null,
-    actionIconDynamicContent: @Composable (BoxScope.() -> Unit)? = null,
     onActionIconClick: (() -> Unit)? = null,
     onNavigateUp: (() -> Unit)? = null
 ) {
@@ -99,10 +97,6 @@ fun AppTopBar(
                             )
                         }
 
-                    }
-
-                    actionIconDynamicContent?.let { content ->
-                        content()
                     }
                 }
 

@@ -4,10 +4,12 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.ui.base.BaseEffect.ShowSnackBar
 import com.example.ui.toSnackBar
-import kotlinx.coroutines.*
+import kotlinx.coroutines.CancellationException
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.async
 import kotlinx.coroutines.flow.*
+import kotlinx.coroutines.launch
 import java.io.IOException
-import kotlin.coroutines.CoroutineContext
 
 abstract class BaseViewModel<Action, State> constructor(initialState: State) : ViewModel() {
 
@@ -43,10 +45,9 @@ abstract class BaseViewModel<Action, State> constructor(initialState: State) : V
         onError: ((Exception) -> Unit)? = null,
         onLoading: ((Boolean) -> Unit)? = null,
         suspendJob: ((Job) -> Unit)? = null,
-        dispatcher: CoroutineContext = Dispatchers.IO,
         showSnackbarOnError: Boolean = true
     ) {
-        viewModelScope.launch(dispatcher) {
+        viewModelScope.launch {
             onLoading?.invoke(true)
             try {
                 val blockResult = async {
@@ -87,10 +88,9 @@ abstract class BaseViewModel<Action, State> constructor(initialState: State) : V
         onError: ((Exception) -> Unit)? = null,
         onLoading: ((Boolean) -> Unit)? = null,
         suspendJob: ((Job) -> Unit)? = null,
-        dispatcher: CoroutineContext = Dispatchers.IO,
         showSnackbarOnError: Boolean = true
     ) {
-        viewModelScope.launch(dispatcher) {
+        viewModelScope.launch {
             onLoading?.invoke(true)
             try {
                 block()
