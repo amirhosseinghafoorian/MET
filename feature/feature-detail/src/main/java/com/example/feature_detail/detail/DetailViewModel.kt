@@ -3,7 +3,7 @@ package com.example.feature_detail.detail
 import android.os.Bundle
 import androidx.lifecycle.SavedStateHandle
 import com.example.common.AppConstants.keyId
-import com.example.domain.repository.DetailRepository
+import com.example.domain.usecase.GetObjectDetailUseCase
 import com.example.feature_detail.detail.DetailAction.ShowPicture
 import com.example.feature_detail.detail.DetailAction.TryAgain
 import com.example.feature_detail.navigation.keyImage
@@ -15,7 +15,7 @@ import javax.inject.Inject
 @HiltViewModel
 class DetailViewModel @Inject constructor(
     savedStateHandle: SavedStateHandle,
-    private val repository: DetailRepository
+    private val getObjectDetailUseCase: GetObjectDetailUseCase,
 ) : BaseViewModel<DetailAction, DetailUiState>(
     DetailUiState(
         objectId = savedStateHandle.get<Int>(keyId)
@@ -51,7 +51,7 @@ class DetailViewModel @Inject constructor(
     private fun getObjectDetail(id: Int) {
         makeSuspendCall(
             block = {
-                repository.getObjectDetail(id)
+                getObjectDetailUseCase(id)
             },
             onSuccess = { result ->
                 updateState { copy(objectDetail = result) }

@@ -2,7 +2,7 @@ package com.example.feature_search.search
 
 import android.os.Bundle
 import com.example.common.AppConstants.keyId
-import com.example.domain.repository.SearchRepository
+import com.example.domain.usecase.SearchObjectsUseCase
 import com.example.feature_search.search.SearchAction.OnObjectSelect
 import com.example.feature_search.search.SearchAction.OnUpdateTextField
 import com.example.ui.base.BaseEffect.Navigate
@@ -14,7 +14,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class SearchViewModel @Inject constructor(
-    private val repository: SearchRepository
+    private val searchObjectsUseCase: SearchObjectsUseCase
 ) : BaseViewModel<SearchAction, SearchUiState>(SearchUiState()) {
 
     private var searchJob: Job? = null
@@ -53,7 +53,7 @@ class SearchViewModel @Inject constructor(
         makeSuspendCall(
             block = {
                 delay(500)
-                repository.searchObjects(query)
+                searchObjectsUseCase(query)
             },
             onSuccess = { result ->
                 updateState {
