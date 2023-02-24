@@ -75,7 +75,7 @@ fun SearchRoute(
 }
 
 @Composable
-private fun SearchScreen(
+internal fun SearchScreen(
     focusManager: FocusManager,
     uiState: SearchUiState,
     onAction: (SearchAction) -> Unit
