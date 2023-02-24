@@ -30,8 +30,9 @@ class SearchScreenTest {
             MetTheme {
                 SearchScreen(
                     focusManager = LocalFocusManager.current,
-                    uiState = uiState
-                ) {}
+                    uiState = uiState,
+                    onAction = {}
+                )
             }
         }
 
@@ -47,8 +48,9 @@ class SearchScreenTest {
             MetTheme {
                 SearchScreen(
                     focusManager = LocalFocusManager.current,
-                    uiState = uiState
-                ) {}
+                    uiState = uiState,
+                    onAction = {}
+                )
             }
         }
 
@@ -95,8 +97,9 @@ class SearchScreenTest {
             MetTheme {
                 SearchScreen(
                     focusManager = LocalFocusManager.current,
-                    uiState = uiState
-                ) {}
+                    uiState = uiState,
+                    onAction = {}
+                )
             }
         }
 
@@ -112,8 +115,9 @@ class SearchScreenTest {
             MetTheme {
                 SearchScreen(
                     focusManager = LocalFocusManager.current,
-                    uiState = uiState
-                ) {}
+                    uiState = uiState,
+                    onAction = {}
+                )
             }
         }
 
@@ -127,8 +131,9 @@ class SearchScreenTest {
             MetTheme {
                 SearchScreen(
                     focusManager = LocalFocusManager.current,
-                    uiState = uiState
-                ) {}
+                    uiState = uiState,
+                    onAction = {}
+                )
             }
         }
 
