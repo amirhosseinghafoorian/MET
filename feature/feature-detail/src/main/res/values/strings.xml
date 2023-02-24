@@ -12,6 +12,6 @@
     <string name="label_title">Title</string>
     <string name="label_repository">Repository</string>
 
-    <string name="tag_header">header section</string>
-    <string name="tag_overall">overall section</string>
+    <string name="tag_header">header</string>
+    <string name="tag_overall">overall</string>
 </resources>
