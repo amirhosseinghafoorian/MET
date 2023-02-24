@@ -15,6 +15,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
@@ -63,13 +64,19 @@ fun DetailRoute(
 }
 
 @Composable
-private fun DetailScreen(
+internal fun DetailScreen(
     uiState: DetailUiState,
     onAction: (DetailAction) -> Unit,
 ) {
     uiState.objectDetail?.let { detail ->
-        val showMiddleSection by derivedStateOf {
-            detail.department.isNotBlank() || detail.artistName.isNotBlank()
+        val showHeaderSection by derivedStateOf {
+            detail.name.isNotBlank() || detail.imageUrl != null
+        }
+
+        val showOverallSection by derivedStateOf {
+            detail.department.isNotBlank()
+                    || detail.artistName.isNotBlank()
+                    || detail.additionalImageUrls != null
         }
 
         Column(
@@ -77,41 +84,45 @@ private fun DetailScreen(
                 .fillMaxSize()
                 .verticalScroll(rememberScrollState())
         ) {
-            Row(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .background(MaterialTheme.colors.primary)
-                    .padding(MaterialTheme.spacing.medium),
-                verticalAlignment = Alignment.CenterVertically
-            ) {
-                detail.imageUrl?.let { url ->
-                    AppAsyncImage(
-                        imageUrl = url,
-                        modifier = Modifier
-                            .size(MaterialTheme.sizing.small)
-                            .clip(CircleShape),
-                        backgroundColor = MaterialTheme.colors.onPrimary,
-                        onClick = {
-                            onAction(ShowPicture(url))
-                        }
+            if (showHeaderSection) {
+                Row(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .background(MaterialTheme.colors.primary)
+                        .padding(MaterialTheme.spacing.medium)
+                        .testTag(stringResource(R.string.tag_header)),
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    detail.imageUrl?.let { url ->
+                        AppAsyncImage(
+                            imageUrl = url,
+                            modifier = Modifier
+                                .size(MaterialTheme.sizing.small)
+                                .clip(CircleShape),
+                            backgroundColor = MaterialTheme.colors.onPrimary,
+                            onClick = {
+                                onAction(ShowPicture(url))
+                            }
+                        )
+
+                        WidthSpacer(value = MaterialTheme.spacing.medium)
+                    }
+
+                    Text(
+                        text = detail.name,
+                        color = MaterialTheme.colors.onPrimary,
+                        style = MaterialTheme.typography.h5
                     )
-
-                    WidthSpacer(value = MaterialTheme.spacing.medium)
                 }
-
-                Text(
-                    text = detail.name,
-                    color = MaterialTheme.colors.onPrimary,
-                    style = MaterialTheme.typography.h5
-                )
             }
 
-            if (showMiddleSection) {
+            if (showOverallSection) {
                 Column(
                     modifier = Modifier
                         .fillMaxWidth()
                         .background(MaterialTheme.colors.surface)
-                        .padding(MaterialTheme.spacing.medium),
+                        .padding(MaterialTheme.spacing.medium)
+                        .testTag(stringResource(R.string.tag_overall)),
                 ) {
                     DetailItem(
                         label = stringResource(R.string.label_department),
@@ -172,7 +183,10 @@ private fun DetailScreen(
                     content = detail.classification
                 )
 
-                DetailItem(label = stringResource(R.string.label_title), content = detail.title)
+                DetailItem(
+                    label = stringResource(R.string.label_title),
+                    content = detail.title
+                )
 
                 DetailItem(
                     label = stringResource(R.string.label_repository),

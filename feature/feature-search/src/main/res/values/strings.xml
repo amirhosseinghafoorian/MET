@@ -3,4 +3,5 @@
     <string name="title_met">Met</string>
 
     <string name="label_search_place_holder">Search anything ..</string>
+    <string name="tag_loading">circular loading</string>
 </resources>
