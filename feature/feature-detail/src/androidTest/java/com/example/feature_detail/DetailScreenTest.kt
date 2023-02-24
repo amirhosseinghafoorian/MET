@@ -3,11 +3,14 @@ package com.example.feature_detail
 import androidx.compose.ui.test.junit4.createComposeRule
 import androidx.compose.ui.test.onNodeWithTag
 import androidx.compose.ui.test.onNodeWithText
+import androidx.compose.ui.test.performClick
 import androidx.test.platform.app.InstrumentationRegistry
 import com.example.designsystem.theme.MetTheme
 import com.example.domain.model.ObjectDetail
+import com.example.feature_detail.detail.DetailAction
 import com.example.feature_detail.detail.DetailScreen
 import com.example.feature_detail.detail.DetailUiState
+import com.example.testing.shouldBeEqualTo
 import org.junit.Rule
 import org.junit.Test
 
@@ -34,6 +37,31 @@ class DetailScreenTest {
         composeTestRule.onNodeWithText(
             resources.getString(R.string.label_internet_problem_massage)
         ).assertExists()
+    }
+
+    @Test
+    fun tryAgainAction_onRetryButtonClick_isCalled() {
+        val uiState = DetailUiState()
+        var isActionCalled = false
+
+        composeTestRule.setContent {
+            MetTheme {
+                DetailScreen(
+                    uiState = uiState,
+                    onAction = { action ->
+                        if (action is DetailAction.TryAgain) {
+                            isActionCalled = true
+                        }
+                    }
+                )
+            }
+        }
+
+        composeTestRule.onNodeWithText(
+            resources.getString(R.string.label_internet_problem_massage)
+        ).performClick()
+
+        isActionCalled shouldBeEqualTo true
     }
 
     @Test
@@ -246,12 +274,17 @@ class DetailScreenTest {
             }
         }
 
-        composeTestRule.onNodeWithText(resources.getString(R.string.label_accession_number)).assertExists()
-        composeTestRule.onNodeWithText(resources.getString(R.string.label_accession_year)).assertExists()
-        composeTestRule.onNodeWithText(resources.getString(R.string.label_artist_role)).assertExists()
-        composeTestRule.onNodeWithText(resources.getString(R.string.label_classification)).assertExists()
+        composeTestRule.onNodeWithText(resources.getString(R.string.label_accession_number))
+            .assertExists()
+        composeTestRule.onNodeWithText(resources.getString(R.string.label_accession_year))
+            .assertExists()
+        composeTestRule.onNodeWithText(resources.getString(R.string.label_artist_role))
+            .assertExists()
+        composeTestRule.onNodeWithText(resources.getString(R.string.label_classification))
+            .assertExists()
         composeTestRule.onNodeWithText(resources.getString(R.string.label_title)).assertExists()
-        composeTestRule.onNodeWithText(resources.getString(R.string.label_repository)).assertExists()
+        composeTestRule.onNodeWithText(resources.getString(R.string.label_repository))
+            .assertExists()
 
         composeTestRule.onNodeWithText("1234").assertExists()
         composeTestRule.onNodeWithText("1500").assertExists()
@@ -287,12 +320,18 @@ class DetailScreenTest {
             }
         }
 
-        composeTestRule.onNodeWithText(resources.getString(R.string.label_accession_number)).assertDoesNotExist()
-        composeTestRule.onNodeWithText(resources.getString(R.string.label_accession_year)).assertDoesNotExist()
-        composeTestRule.onNodeWithText(resources.getString(R.string.label_artist_role)).assertDoesNotExist()
-        composeTestRule.onNodeWithText(resources.getString(R.string.label_classification)).assertDoesNotExist()
-        composeTestRule.onNodeWithText(resources.getString(R.string.label_title)).assertDoesNotExist()
-        composeTestRule.onNodeWithText(resources.getString(R.string.label_repository)).assertDoesNotExist()
+        composeTestRule.onNodeWithText(resources.getString(R.string.label_accession_number))
+            .assertDoesNotExist()
+        composeTestRule.onNodeWithText(resources.getString(R.string.label_accession_year))
+            .assertDoesNotExist()
+        composeTestRule.onNodeWithText(resources.getString(R.string.label_artist_role))
+            .assertDoesNotExist()
+        composeTestRule.onNodeWithText(resources.getString(R.string.label_classification))
+            .assertDoesNotExist()
+        composeTestRule.onNodeWithText(resources.getString(R.string.label_title))
+            .assertDoesNotExist()
+        composeTestRule.onNodeWithText(resources.getString(R.string.label_repository))
+            .assertDoesNotExist()
     }
 
 }
