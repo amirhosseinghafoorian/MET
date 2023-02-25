@@ -175,7 +175,7 @@ class SearchScreenTest {
 
         val objectIds = mutableListOf<Int>()
 
-        repeat(200) { id ->
+        repeat(500) { id ->
             objectIds.add(id)
         }
 
@@ -191,7 +191,7 @@ class SearchScreenTest {
             }
         }
 
-        composeTestRule.onNodeWithText("150").assertDoesNotExist()
+        composeTestRule.onNodeWithText("400").assertDoesNotExist()
     }
 
 }
