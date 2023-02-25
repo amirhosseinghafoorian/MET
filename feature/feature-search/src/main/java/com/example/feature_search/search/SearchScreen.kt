@@ -76,7 +76,7 @@ fun SearchRoute(
 }
 
 @Composable
-fun SearchScreenDecider(
+private fun SearchScreenDecider(
     uiState: SearchUiState,
     onAction: (SearchAction) -> Unit
 ) {

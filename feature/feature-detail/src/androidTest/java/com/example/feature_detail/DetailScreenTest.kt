@@ -8,7 +8,7 @@ import androidx.test.platform.app.InstrumentationRegistry
 import com.example.designsystem.theme.MetTheme
 import com.example.domain.model.ObjectDetail
 import com.example.feature_detail.detail.DetailAction
-import com.example.feature_detail.detail.DetailScreen
+import com.example.feature_detail.detail.DetailScreenSmall
 import com.example.feature_detail.detail.DetailUiState
 import com.example.testing.shouldBeEqualTo
 import org.junit.Rule
@@ -27,7 +27,7 @@ class DetailScreenTest {
         val uiState = DetailUiState()
         composeTestRule.setContent {
             MetTheme {
-                DetailScreen(
+                DetailScreenSmall(
                     uiState = uiState,
                     onAction = {}
                 )
@@ -46,7 +46,7 @@ class DetailScreenTest {
 
         composeTestRule.setContent {
             MetTheme {
-                DetailScreen(
+                DetailScreenSmall(
                     uiState = uiState,
                     onAction = { action ->
                         if (action is DetailAction.TryAgain) {
@@ -83,7 +83,7 @@ class DetailScreenTest {
         )
         composeTestRule.setContent {
             MetTheme {
-                DetailScreen(
+                DetailScreenSmall(
                     uiState = uiState,
                     onAction = {}
                 )
@@ -114,7 +114,7 @@ class DetailScreenTest {
         )
         composeTestRule.setContent {
             MetTheme {
-                DetailScreen(
+                DetailScreenSmall(
                     uiState = uiState,
                     onAction = {}
                 )
@@ -143,7 +143,7 @@ class DetailScreenTest {
         )
         composeTestRule.setContent {
             MetTheme {
-                DetailScreen(
+                DetailScreenSmall(
                     uiState = uiState,
                     onAction = {}
                 )
@@ -174,7 +174,7 @@ class DetailScreenTest {
         )
         composeTestRule.setContent {
             MetTheme {
-                DetailScreen(
+                DetailScreenSmall(
                     uiState = uiState,
                     onAction = {}
                 )
@@ -205,7 +205,7 @@ class DetailScreenTest {
         )
         composeTestRule.setContent {
             MetTheme {
-                DetailScreen(
+                DetailScreenSmall(
                     uiState = uiState,
                     onAction = {}
                 )
@@ -236,7 +236,7 @@ class DetailScreenTest {
         )
         composeTestRule.setContent {
             MetTheme {
-                DetailScreen(
+                DetailScreenSmall(
                     uiState = uiState,
                     onAction = {}
                 )
@@ -267,7 +267,7 @@ class DetailScreenTest {
         )
         composeTestRule.setContent {
             MetTheme {
-                DetailScreen(
+                DetailScreenSmall(
                     uiState = uiState,
                     onAction = {}
                 )
@@ -313,7 +313,7 @@ class DetailScreenTest {
         )
         composeTestRule.setContent {
             MetTheme {
-                DetailScreen(
+                DetailScreenSmall(
                     uiState = uiState,
                     onAction = {}
                 )
