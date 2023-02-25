@@ -32,6 +32,8 @@ import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.common.AppConstants.keyId
+import com.example.designsystem.theme.LocalScreenType
+import com.example.designsystem.theme.ScreenType.*
 import com.example.designsystem.theme.sizing
 import com.example.designsystem.theme.spacing
 import com.example.feature_search.R
@@ -50,7 +52,6 @@ fun SearchRoute(
     onSearchDetail: (Int) -> Unit
 ) {
     val uiState by viewModel.uiState.collectAsState()
-    val focusManager = LocalFocusManager.current
     val context = LocalContext.current
 
     AppEffectObserver(
@@ -68,11 +69,35 @@ fun SearchRoute(
         }
     )
 
-    SearchScreen(
-        focusManager = focusManager,
+    SearchScreenDecider(
         uiState = uiState,
         onAction = viewModel::submitAction
     )
+}
+
+@Composable
+fun SearchScreenDecider(
+    uiState: SearchUiState,
+    onAction: (SearchAction) -> Unit
+) {
+    val focusManager = LocalFocusManager.current
+
+    when (LocalScreenType.current) {
+        Phone, FoP -> {
+            SearchScreen(
+                focusManager = focusManager,
+                uiState = uiState,
+                onAction = onAction
+            )
+        }
+        FoL, ToP, Desktop -> {
+            SearchScreenLarge(
+                focusManager = focusManager,
+                uiState = uiState,
+                onAction = onAction
+            )
+        }
+    }
 }
 
 @Composable
@@ -110,6 +135,75 @@ internal fun SearchScreen(
                 },
                 showError = false
             )
+        }
+
+        if (uiState.isSearchLoading) {
+            item(span = { GridItemSpan(maxLineSpan) }) {
+                Box(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .height(MaterialTheme.sizing.medium)
+                        .testTag(stringResource(R.string.tag_loading)),
+                    contentAlignment = Alignment.Center
+                ) {
+                    CircularProgressIndicator()
+                }
+            }
+        } else {
+            items(
+                items = uiState.objectIds,
+                key = { it }
+            ) { id ->
+                ObjectIdItem(id) {
+                    onAction(OnObjectSelect(id))
+                }
+            }
+        }
+    }
+}
+
+@Composable
+internal fun SearchScreenLarge(
+    focusManager: FocusManager,
+    uiState: SearchUiState,
+    onAction: (SearchAction) -> Unit
+) {
+    LazyVerticalGrid(
+        modifier = Modifier
+            .fillMaxSize()
+            .padding(MaterialTheme.spacing.medium),
+        columns = GridCells.Adaptive(MaterialTheme.sizing.medium),
+        horizontalArrangement = Arrangement.spacedBy(MaterialTheme.spacing.extraSmall),
+        verticalArrangement = Arrangement.spacedBy(MaterialTheme.spacing.small)
+    ) {
+        item(span = { GridItemSpan(maxLineSpan) }) {
+            Row(modifier = Modifier.fillMaxWidth()) {
+                Spacer(modifier = Modifier.weight(1f))
+
+                AppTextField(
+                    state = uiState.searchFieldState,
+                    modifier = Modifier.weight(8f),
+                    onValueChange = { text ->
+                        onAction(OnUpdateTextField(text))
+                    },
+                    keyboardOptions = KeyboardOptions(
+                        imeAction = ImeAction.Done,
+                        keyboardType = KeyboardType.Text
+                    ),
+                    keyboardActions = KeyboardActions(
+                        onDone = {
+                            focusManager.clearFocus()
+                        }
+                    ),
+                    placeholder = stringResource(R.string.label_search_place_holder),
+                    leadingIcon = {
+                        Icon(imageVector = Icons.Default.Search, contentDescription = null)
+                    },
+                    showError = false
+                )
+
+                Spacer(modifier = Modifier.weight(1f))
+            }
         }
 
         if (uiState.isSearchLoading) {

@@ -4,6 +4,7 @@ import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.darkColors
 import androidx.compose.material.lightColors
+import androidx.compose.material3.windowsizeclass.WindowSizeClass
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 
@@ -30,16 +31,23 @@ private val LightColorPalette = lightColors(
 )
 
 @Composable
-fun MetTheme(darkTheme: Boolean = isSystemInDarkTheme(), content: @Composable () -> Unit) {
+fun MetTheme(
+    windowSizeClass: WindowSizeClass? = null,
+    darkTheme: Boolean = isSystemInDarkTheme(),
+    content: @Composable () -> Unit
+) {
     val colors = if (darkTheme) {
         DarkColorPalette
     } else {
         LightColorPalette
     }
 
+    val screenType = determineScreenType(windowSizeClass)
+
     CompositionLocalProvider(
         LocalSpacing provides Spacing(),
-        LocalSizing provides Sizing()
+        LocalSizing provides Sizing(),
+        LocalScreenType provides screenType
     ) {
         MaterialTheme(
             colors = colors,

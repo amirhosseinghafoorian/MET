@@ -11,7 +11,7 @@ import com.google.accompanist.systemuicontroller.rememberSystemUiController
 fun MetApp(
     windowSizeClass: WindowSizeClass,
 ) {
-    MetTheme {
+    MetTheme(windowSizeClass) {
         val systemUiController = rememberSystemUiController()
         val backgroundColor = MaterialTheme.colors.background
         val surfaceColor = MaterialTheme.colors.surface
