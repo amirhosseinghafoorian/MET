@@ -17,7 +17,6 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -43,6 +42,7 @@ import com.example.ui.base.BaseEffect.Navigate
 import com.example.ui.base.BaseEffect.ShowSnackBar
 import com.example.ui.component.AppEffectObserver
 import com.example.ui.component.AppTextField
+import com.example.ui.component.collectAsStateWithLifecycle
 import com.example.ui.component.showAppSnackBar
 
 @Composable
@@ -51,7 +51,7 @@ fun SearchRoute(
     viewModel: SearchViewModel = hiltViewModel(),
     onSearchDetail: (Int) -> Unit
 ) {
-    val uiState by viewModel.uiState.collectAsState()
+    val uiState by viewModel.uiState.collectAsStateWithLifecycle()
     val context = LocalContext.current
 
     AppEffectObserver(

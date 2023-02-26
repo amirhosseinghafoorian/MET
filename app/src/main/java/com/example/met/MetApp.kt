@@ -21,6 +21,6 @@ fun MetApp(
             systemUiController.setNavigationBarColor(backgroundColor)
         }
 
-        AppNavGraph(windowSizeClass)
+        AppNavGraph()
     }
 }
