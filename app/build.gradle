@@ -9,6 +9,18 @@ android {
     namespace 'com.example.met'
     compileSdk 33
 
+    Properties properties = new Properties()
+    properties.load(project.rootProject.file("local.properties").newDataInputStream())
+
+    signingConfigs {
+        release {
+            storeFile file(properties.getProperty("keyPath"))
+            storePassword properties.getProperty("keyPassword")
+            keyAlias properties.getProperty("keyAlias")
+            keyPassword properties.getProperty("keyAliasPassword")
+        }
+    }
+
     defaultConfig {
         applicationId "com.example.met"
         minSdk 21
@@ -24,7 +36,8 @@ android {
 
     buildTypes {
         release {
-            minifyEnabled false
+            minifyEnabled true
+            signingConfig signingConfigs.release
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }

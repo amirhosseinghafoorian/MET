@@ -1,5 +1,8 @@
 package com.example.data.model
 
+import androidx.annotation.Keep
+
+@Keep
 data class GetObjectDetailResponse(
     val GalleryNumber: String,
     val accessionNumber: String,
