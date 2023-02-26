@@ -1,6 +1,5 @@
 package com.example.ui.base
 
-import androidx.compose.material3.windowsizeclass.WindowSizeClass
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.navigation.NavHostController
@@ -11,21 +10,18 @@ import com.example.ui.Icon
 @Composable
 fun rememberBaseAppState(
     navController: NavHostController = rememberNavController(),
-    windowSizeClass: WindowSizeClass,
     screenTitles: Map<String, Int> = mapOf(),
     screenActionIcons: Map<String, Icon> = mapOf(),
     navigationIconVisibleRoutes: Set<String> = setOf()
 ): BaseAppState {
     return remember(
         navController,
-        windowSizeClass,
         screenTitles,
         screenActionIcons,
         navigationIconVisibleRoutes
     ) {
         BaseAppState(
             navController = navController,
-            windowSizeClass = windowSizeClass,
             screenTitles = screenTitles,
             screenActionIcons = screenActionIcons,
             navigationIconVisibleRoutes = navigationIconVisibleRoutes,
@@ -35,7 +31,6 @@ fun rememberBaseAppState(
 
 class BaseAppState(
     val navController: NavHostController,
-    val windowSizeClass: WindowSizeClass,
     private val screenTitles: Map<String, Int> = mapOf(),
     private val screenActionIcons: Map<String, Icon> = mapOf(),
     private val navigationIconVisibleRoutes: Set<String> = setOf(),

@@ -2,7 +2,6 @@ package com.example.feature_detail.navigation
 
 import androidx.compose.material.Scaffold
 import androidx.compose.material.rememberScaffoldState
-import androidx.compose.material3.windowsizeclass.WindowSizeClass
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.navigation.NavGraphBuilder
@@ -22,7 +21,6 @@ import com.example.ui.base.rememberBaseAppState
 import com.example.ui.component.AppTopBar
 
 fun NavGraphBuilder.detailNavGraph(
-    windowSizeClass: WindowSizeClass,
     onNavigateUp: () -> Unit
 ) {
     composable(
@@ -37,8 +35,7 @@ fun NavGraphBuilder.detailNavGraph(
         val id = navBackStackEntry.arguments?.getInt(keyId) ?: -1
         DetailHost(
             id = id,
-            onNavigateUp = onNavigateUp,
-            windowSizeClass = windowSizeClass
+            onNavigateUp = onNavigateUp
         )
     }
 }
@@ -47,9 +44,7 @@ fun NavGraphBuilder.detailNavGraph(
 fun DetailHost(
     id: Int,
     onNavigateUp: () -> Unit,
-    windowSizeClass: WindowSizeClass,
     baseState: BaseAppState = rememberBaseAppState(
-        windowSizeClass = windowSizeClass,
         screenTitles = mapOf(
             DetailScreenRoute.route to R.string.title_detail
         ),

@@ -8,7 +8,6 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
@@ -33,6 +32,7 @@ import com.example.ui.WidthSpacer
 import com.example.ui.base.BaseEffect.Navigate
 import com.example.ui.component.AppAsyncImage
 import com.example.ui.component.AppEffectObserver
+import com.example.ui.component.collectAsStateWithLifecycle
 import com.example.ui.dynamicShimmer
 
 @Composable
@@ -40,7 +40,7 @@ fun DetailRoute(
     viewModel: DetailViewModel = hiltViewModel(),
     onImageSelect: (String) -> Unit
 ) {
-    val uiState by viewModel.uiState.collectAsState()
+    val uiState by viewModel.uiState.collectAsStateWithLifecycle()
 
     AppEffectObserver(
         effectFlow = viewModel.effectFlow,
