@@ -38,19 +38,18 @@ android {
 
 dependencies {
 
-    implementation 'androidx.core:core-ktx:1.7.0'
-    implementation 'androidx.appcompat:appcompat:1.5.1'
-    implementation 'com.google.android.material:material:1.5.0'
-    testImplementation 'junit:junit:4.13.2'
+    implementation libs.core.ktx
+    implementation libs.appcompat
+    implementation libs.material
 
-    api "androidx.compose.ui:ui:$compose_ui_version"
-    api "androidx.compose.ui:ui-tooling-preview:$compose_ui_version"
-    api 'androidx.compose.material:material:1.3.1'
-    api "androidx.compose.ui:ui-test-junit4:$compose_ui_version"
-    api "androidx.compose.ui:ui-tooling:$compose_ui_version"
-    api "androidx.compose.ui:ui-test-manifest:$compose_ui_version"
+    api libs.ui
+    api libs.ui.tooling.preview
+    api libs.ui.test.junit
+    api libs.ui.tooling
+    api libs.ui.test.manifest
+    api libs.compose.material
 
     // windowSizeClass
-    api "androidx.compose.material3:material3:1.0.1"
-    api "androidx.compose.material3:material3-window-size-class:1.0.1"
+    api libs.compose.material3
+    api libs.compose.material3.window.size
 }

@@ -83,12 +83,10 @@ dependencies {
     implementation project(":core:data")
     implementation project(":core:domain")
 
-    implementation 'androidx.core:core-ktx:1.7.0'
-    implementation 'androidx.lifecycle:lifecycle-runtime-ktx:2.3.1'
-    implementation 'androidx.activity:activity-compose:1.3.1'
-    testImplementation 'junit:junit:4.13.2'
+    implementation libs.activity.compose
+    implementation libs.lifecycle.runtime.ktx
 
     // hilt
-    implementation "com.google.dagger:hilt-android:2.43"
-    kapt "com.google.dagger:hilt-android-compiler:2.43"
+    implementation libs.hilt.android
+    kapt libs.hilt.android.compiler
 }

@@ -31,22 +31,22 @@ android {
 }
 
 dependencies {
-
-    androidTestImplementation 'androidx.test.ext:junit:1.1.5'
-    androidTestImplementation 'androidx.test.espresso:espresso-core:3.5.1'
+    api libs.core.ktx
+    api libs.appcompat
+    api libs.material
 
     // junit 4
-    api 'junit:junit:4.13.2'
+    api libs.junit
 
     // junit 5 assert
-    api "org.junit.jupiter:junit-jupiter-api:5.8.2"
+    implementation libs.junit.jupiter.api
 
     // mock
-    api "io.mockk:mockk:1.12.5"
+    api libs.mockk
 
     // coroutine for testing
-    api 'org.jetbrains.kotlinx:kotlinx-coroutines-test:1.6.4'
+    api libs.kotlinx.coroutines.test
 
     // arch
-    api "androidx.arch.core:core-testing:2.1.0"
+    api libs.core.testing
 }
