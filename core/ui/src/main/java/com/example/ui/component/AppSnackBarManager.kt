@@ -10,11 +10,11 @@ suspend fun ScaffoldState.showAppSnackBar(
 ) {
     when (snackBar) {
         is SnackBar.StringResourceSnackBar -> {
-            val massage = context.getString(snackBar.id)
-            snackbarHostState.showSnackbar(massage)
+            val message = context.getString(snackBar.id)
+            snackbarHostState.showSnackbar(message)
         }
         is SnackBar.StringSnackBar -> {
-            snackbarHostState.showSnackbar(snackBar.massage)
+            snackbarHostState.showSnackbar(snackBar.message)
         }
     }
 }

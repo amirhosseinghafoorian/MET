@@ -4,7 +4,6 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import com.example.common.firstONull
-import com.solidict.ui.text_field_util.condition_validator.TextFieldStateValidator
 
 abstract class TextFieldState {
 
@@ -17,7 +16,7 @@ abstract class TextFieldState {
     open fun validate(): Boolean {
         errorMessage = validators.firstONull { validator ->
             !validator.validate(text)
-        }?.errorMassage
+        }?.errorMessage
 
         return isValid()
     }

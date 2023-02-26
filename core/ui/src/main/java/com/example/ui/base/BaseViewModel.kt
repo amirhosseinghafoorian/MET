@@ -10,6 +10,7 @@ import kotlinx.coroutines.async
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 import java.io.IOException
+import java.net.UnknownHostException
 
 abstract class BaseViewModel<Action, State> constructor(initialState: State) : ViewModel() {
 
@@ -43,6 +44,7 @@ abstract class BaseViewModel<Action, State> constructor(initialState: State) : V
         block: suspend () -> R,
         onSuccess: ((R) -> Unit)? = null,
         onError: ((Exception) -> Unit)? = null,
+        onInternetProblem: (() -> Unit)? = null,
         onLoading: ((Boolean) -> Unit)? = null,
         suspendJob: ((Job) -> Unit)? = null,
         showSnackbarOnError: Boolean = true
@@ -55,21 +57,26 @@ abstract class BaseViewModel<Action, State> constructor(initialState: State) : V
                 }
                 val result = blockResult.await().getOrThrow()
                 onSuccess?.invoke(result)
-            } catch (e: IOException) {
-                if (showSnackbarOnError) {
-                    sendEffect(ShowSnackBar(com.example.ui.R.string.massage_internet_problem.toSnackBar()))
-                }
-                onError?.invoke(Exception(e.message, e.cause))
-                e.printStackTrace()
             } catch (e: Exception) {
                 if (e !is CancellationException) {
-                    if (showSnackbarOnError) {
-                        e.message?.let { errorMessage ->
-                            sendEffect(ShowSnackBar(errorMessage.toSnackBar()))
+                    when (e) {
+                        is IOException, is UnknownHostException -> {
+                            if (showSnackbarOnError) {
+                                sendEffect(ShowSnackBar(com.example.ui.R.string.message_internet_problem.toSnackBar()))
+                            }
+                            onInternetProblem?.invoke()
+                            e.printStackTrace()
+                        }
+                        else -> {
+                            if (showSnackbarOnError) {
+                                e.message?.let { errorMessage ->
+                                    sendEffect(ShowSnackBar(errorMessage.toSnackBar()))
+                                }
+                            }
+                            onError?.invoke(e)
+                            e.printStackTrace()
                         }
                     }
-                    onError?.invoke(e)
-                    e.printStackTrace()
                 }
             } finally {
                 onLoading?.invoke(false)
@@ -86,6 +93,7 @@ abstract class BaseViewModel<Action, State> constructor(initialState: State) : V
         block: suspend () -> Unit,
         onSuccess: (() -> Unit)? = null,
         onError: ((Exception) -> Unit)? = null,
+        onInternetProblem: (() -> Unit)? = null,
         onLoading: ((Boolean) -> Unit)? = null,
         suspendJob: ((Job) -> Unit)? = null,
         showSnackbarOnError: Boolean = true
@@ -95,21 +103,26 @@ abstract class BaseViewModel<Action, State> constructor(initialState: State) : V
             try {
                 block()
                 onSuccess?.invoke()
-            } catch (e: IOException) {
-                if (showSnackbarOnError) {
-                    sendEffect(ShowSnackBar(com.example.ui.R.string.massage_internet_problem.toSnackBar()))
-                }
-                onError?.invoke(Exception(e.message, e.cause))
-                e.printStackTrace()
             } catch (e: Exception) {
                 if (e !is CancellationException) {
-                    if (showSnackbarOnError) {
-                        e.message?.let { errorMessage ->
-                            sendEffect(ShowSnackBar(errorMessage.toSnackBar()))
+                    when (e) {
+                        is IOException, is UnknownHostException -> {
+                            if (showSnackbarOnError) {
+                                sendEffect(ShowSnackBar(com.example.ui.R.string.message_internet_problem.toSnackBar()))
+                            }
+                            onInternetProblem?.invoke()
+                            e.printStackTrace()
+                        }
+                        else -> {
+                            if (showSnackbarOnError) {
+                                e.message?.let { errorMessage ->
+                                    sendEffect(ShowSnackBar(errorMessage.toSnackBar()))
+                                }
+                            }
+                            onError?.invoke(e)
+                            e.printStackTrace()
                         }
                     }
-                    onError?.invoke(e)
-                    e.printStackTrace()
                 }
             } finally {
                 onLoading?.invoke(false)

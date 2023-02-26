@@ -1,6 +1,6 @@
 package com.example.data.util
 
-import com.example.common.AppConstants.NULL_RESPONSE_ERROR_MASSAGE
+import com.example.common.AppConstants.NULL_RESPONSE_ERROR_MESSAGE
 import retrofit2.Response
 
 fun <T> Response<T>.getOrThrow() : T {
@@ -10,7 +10,7 @@ fun <T> Response<T>.getOrThrow() : T {
         body()?.let {
             return it
         } ?: run {
-            throw Exception(NULL_RESPONSE_ERROR_MASSAGE)
+            throw Exception(NULL_RESPONSE_ERROR_MESSAGE)
         }
     }
 }

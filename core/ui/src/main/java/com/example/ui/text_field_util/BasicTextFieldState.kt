@@ -1,14 +1,13 @@
 package com.example.ui.text_field_util
 
-import com.example.common.AppConstants.TEXT_FIELD_EMPTY_ERROR_MASSAGE
-import com.solidict.ui.text_field_util.condition_validator.TextFieldStateValidator
+import com.example.common.AppConstants.TEXT_FIELD_EMPTY_ERROR_MESSAGE
 
 class BasicTextFieldState : TextFieldState() {
 
     init {
         addValidators(
             TextFieldStateValidator(
-                errorMassage = TEXT_FIELD_EMPTY_ERROR_MASSAGE,
+                errorMessage = TEXT_FIELD_EMPTY_ERROR_MESSAGE,
                 condition = { text: String -> text.isNotBlank() }
             )
         )

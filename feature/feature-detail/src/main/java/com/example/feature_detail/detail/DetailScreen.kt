@@ -17,6 +17,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.designsystem.theme.LocalScreenType
@@ -105,157 +106,173 @@ internal fun DetailScreenSmall(
     uiState: DetailUiState,
     onAction: (DetailAction) -> Unit,
 ) {
-    uiState.objectDetail?.let { detail ->
-        val showHeaderSection by derivedStateOf {
-            detail.name.isNotBlank() || detail.imageUrl != null
-        }
-
-        val showOverallSection by derivedStateOf {
-            detail.department.isNotBlank()
-                    || detail.artistName.isNotBlank()
-                    || detail.additionalImageUrls != null
-        }
-
-        Column(
+    uiState.serverError?.let { error ->
+        Box(
             modifier = Modifier
                 .fillMaxSize()
-                .verticalScroll(rememberScrollState())
+                .padding(MaterialTheme.spacing.medium),
+            contentAlignment = Alignment.Center
         ) {
-            if (showHeaderSection) {
-                Row(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .background(MaterialTheme.colors.primary)
-                        .padding(MaterialTheme.spacing.medium)
-                        .testTag(stringResource(R.string.tag_header)),
-                    verticalAlignment = Alignment.CenterVertically
-                ) {
-                    detail.imageUrl?.let { url ->
-                        AppAsyncImage(
-                            imageUrl = url,
-                            modifier = Modifier
-                                .size(MaterialTheme.sizing.small)
-                                .clip(CircleShape),
-                            backgroundColor = MaterialTheme.colors.onPrimary,
-                            onClick = {
-                                onAction(ShowPicture(url))
-                            }
-                        )
-
-                        WidthSpacer(value = MaterialTheme.spacing.medium)
-                    }
-
-                    Text(
-                        text = detail.name,
-                        color = MaterialTheme.colors.onPrimary,
-                        style = MaterialTheme.typography.h5
-                    )
-                }
+            Text(
+                text = stringResource(R.string.label_server_problem_message, error),
+                color = MaterialTheme.colors.onBackground,
+                style = MaterialTheme.typography.body1,
+                textAlign = TextAlign.Center
+            )
+        }
+    } ?: run {
+        uiState.objectDetail?.let { detail ->
+            val showHeaderSection by derivedStateOf {
+                detail.name.isNotBlank() || detail.imageUrl != null
             }
 
-            if (showOverallSection) {
-                Column(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .background(MaterialTheme.colors.surface)
-                        .padding(MaterialTheme.spacing.medium)
-                        .testTag(stringResource(R.string.tag_overall)),
-                ) {
-                    DetailItem(
-                        label = stringResource(R.string.label_department),
-                        content = detail.department,
-                        contentColor = MaterialTheme.colors.onSurface
-                    )
-
-                    DetailItem(
-                        label = stringResource(R.string.label_artist_name),
-                        content = detail.artistName,
-                        contentColor = MaterialTheme.colors.onSurface
-                    )
-
-                    detail.additionalImageUrls?.let { urls ->
-                        HeightSpacer(value = MaterialTheme.spacing.medium)
-
-                        LazyRow(modifier = Modifier.fillMaxWidth()) {
-                            items(urls) { url ->
-                                AppAsyncImage(
-                                    imageUrl = url,
-                                    modifier = Modifier
-                                        .size(MaterialTheme.sizing.small)
-                                        .clip(MaterialTheme.shapes.medium),
-                                    onClick = {
-                                        onAction(ShowPicture(url))
-                                    }
-                                )
-
-                                WidthSpacer(value = MaterialTheme.spacing.small)
-                            }
-                        }
-                    }
-                }
+            val showOverallSection by derivedStateOf {
+                detail.department.isNotBlank()
+                        || detail.artistName.isNotBlank()
+                        || detail.additionalImageUrls != null
             }
 
             Column(
                 modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(MaterialTheme.spacing.medium),
+                    .fillMaxSize()
+                    .verticalScroll(rememberScrollState())
             ) {
-                DetailItem(
-                    label = stringResource(R.string.label_accession_number),
-                    content = detail.accessionNumber
-                )
+                if (showHeaderSection) {
+                    Row(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .background(MaterialTheme.colors.primary)
+                            .padding(MaterialTheme.spacing.medium)
+                            .testTag(stringResource(R.string.tag_header)),
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+                        detail.imageUrl?.let { url ->
+                            AppAsyncImage(
+                                imageUrl = url,
+                                modifier = Modifier
+                                    .size(MaterialTheme.sizing.small)
+                                    .clip(CircleShape),
+                                backgroundColor = MaterialTheme.colors.onPrimary,
+                                onClick = {
+                                    onAction(ShowPicture(url))
+                                }
+                            )
 
-                DetailItem(
-                    label = stringResource(R.string.label_accession_year),
-                    content = detail.accessionYear
-                )
+                            WidthSpacer(value = MaterialTheme.spacing.medium)
+                        }
 
-                DetailItem(
-                    label = stringResource(R.string.label_artist_role),
-                    content = detail.artistRole
-                )
+                        Text(
+                            text = detail.name,
+                            color = MaterialTheme.colors.onPrimary,
+                            style = MaterialTheme.typography.h5
+                        )
+                    }
+                }
 
-                DetailItem(
-                    label = stringResource(R.string.label_classification),
-                    content = detail.classification
-                )
+                if (showOverallSection) {
+                    Column(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .background(MaterialTheme.colors.surface)
+                            .padding(MaterialTheme.spacing.medium)
+                            .testTag(stringResource(R.string.tag_overall)),
+                    ) {
+                        DetailItem(
+                            label = stringResource(R.string.label_department),
+                            content = detail.department,
+                            contentColor = MaterialTheme.colors.onSurface
+                        )
 
-                DetailItem(
-                    label = stringResource(R.string.label_title),
-                    content = detail.title
-                )
+                        DetailItem(
+                            label = stringResource(R.string.label_artist_name),
+                            content = detail.artistName,
+                            contentColor = MaterialTheme.colors.onSurface
+                        )
 
-                DetailItem(
-                    label = stringResource(R.string.label_repository),
-                    content = detail.repository
-                )
-            }
-        }
-    } ?: run {
-        Box(
-            modifier = Modifier.fillMaxSize(),
-            contentAlignment = Alignment.Center
-        ) {
-            Box(
-                modifier = Modifier
-                    .clip(MaterialTheme.shapes.large)
-                    .border(
-                        width = 1.dp,
-                        color = MaterialTheme.colors.onBackground,
-                        shape = MaterialTheme.shapes.large
+                        detail.additionalImageUrls?.let { urls ->
+                            HeightSpacer(value = MaterialTheme.spacing.medium)
+
+                            LazyRow(modifier = Modifier.fillMaxWidth()) {
+                                items(urls) { url ->
+                                    AppAsyncImage(
+                                        imageUrl = url,
+                                        modifier = Modifier
+                                            .size(MaterialTheme.sizing.small)
+                                            .clip(MaterialTheme.shapes.medium),
+                                        onClick = {
+                                            onAction(ShowPicture(url))
+                                        }
+                                    )
+
+                                    WidthSpacer(value = MaterialTheme.spacing.small)
+                                }
+                            }
+                        }
+                    }
+                }
+
+                Column(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(MaterialTheme.spacing.medium),
+                ) {
+                    DetailItem(
+                        label = stringResource(R.string.label_accession_number),
+                        content = detail.accessionNumber
                     )
-                    .clickable { onAction(TryAgain) }
-                    .padding(
-                        vertical = MaterialTheme.spacing.small,
-                        horizontal = MaterialTheme.spacing.medium
-                    ),
+
+                    DetailItem(
+                        label = stringResource(R.string.label_accession_year),
+                        content = detail.accessionYear
+                    )
+
+                    DetailItem(
+                        label = stringResource(R.string.label_artist_role),
+                        content = detail.artistRole
+                    )
+
+                    DetailItem(
+                        label = stringResource(R.string.label_classification),
+                        content = detail.classification
+                    )
+
+                    DetailItem(
+                        label = stringResource(R.string.label_title),
+                        content = detail.title
+                    )
+
+                    DetailItem(
+                        label = stringResource(R.string.label_repository),
+                        content = detail.repository
+                    )
+                }
+            }
+        } ?: run {
+            Box(
+                modifier = Modifier.fillMaxSize(),
                 contentAlignment = Alignment.Center
             ) {
-                Text(
-                    text = stringResource(R.string.label_internet_problem_massage),
-                    color = MaterialTheme.colors.onBackground,
-                    style = MaterialTheme.typography.body1
-                )
+                Box(
+                    modifier = Modifier
+                        .clip(MaterialTheme.shapes.large)
+                        .border(
+                            width = 1.dp,
+                            color = MaterialTheme.colors.onBackground,
+                            shape = MaterialTheme.shapes.large
+                        )
+                        .clickable { onAction(TryAgain) }
+                        .padding(
+                            vertical = MaterialTheme.spacing.small,
+                            horizontal = MaterialTheme.spacing.medium
+                        ),
+                    contentAlignment = Alignment.Center
+                ) {
+                    Text(
+                        text = stringResource(R.string.label_internet_problem_message),
+                        color = MaterialTheme.colors.onBackground,
+                        style = MaterialTheme.typography.body1
+                    )
+                }
             }
         }
     }
@@ -425,7 +442,7 @@ internal fun DetailScreenMedium(
                 contentAlignment = Alignment.Center
             ) {
                 Text(
-                    text = stringResource(R.string.label_internet_problem_massage),
+                    text = stringResource(R.string.label_internet_problem_message),
                     color = MaterialTheme.colors.onBackground,
                     style = MaterialTheme.typography.h6
                 )
@@ -598,7 +615,7 @@ internal fun DetailScreenLarge(
                 contentAlignment = Alignment.Center
             ) {
                 Text(
-                    text = stringResource(R.string.label_internet_problem_massage),
+                    text = stringResource(R.string.label_internet_problem_message),
                     color = MaterialTheme.colors.onBackground,
                     style = MaterialTheme.typography.h5
                 )

@@ -23,6 +23,25 @@ class DetailScreenTest {
     private val resources = InstrumentationRegistry.getInstrumentation().targetContext.resources
 
     @Test
+    fun errorText_onServerError_exists() {
+        val uiState = DetailUiState(
+            serverError = "Invalid argument"
+        )
+        composeTestRule.setContent {
+            MetTheme {
+                DetailScreenSmall(
+                    uiState = uiState,
+                    onAction = {}
+                )
+            }
+        }
+
+        composeTestRule.onNodeWithText(
+            resources.getString(R.string.label_server_problem_message, "Invalid argument")
+        ).assertExists()
+    }
+
+    @Test
     fun retryButton_onEmptyObjectDetail_exists() {
         val uiState = DetailUiState()
         composeTestRule.setContent {
@@ -35,7 +54,7 @@ class DetailScreenTest {
         }
 
         composeTestRule.onNodeWithText(
-            resources.getString(R.string.label_internet_problem_massage)
+            resources.getString(R.string.label_internet_problem_message)
         ).assertExists()
     }
 
@@ -58,7 +77,7 @@ class DetailScreenTest {
         }
 
         composeTestRule.onNodeWithText(
-            resources.getString(R.string.label_internet_problem_massage)
+            resources.getString(R.string.label_internet_problem_message)
         ).performClick()
 
         isActionCalled shouldBeEqualTo true
@@ -91,7 +110,7 @@ class DetailScreenTest {
         }
 
         composeTestRule.onNodeWithText(
-            resources.getString(R.string.label_internet_problem_massage)
+            resources.getString(R.string.label_internet_problem_message)
         ).assertDoesNotExist()
     }
 
