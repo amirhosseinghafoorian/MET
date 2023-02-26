@@ -58,6 +58,11 @@ class DetailViewModel @Inject constructor(
             },
             onLoading = { isLoading ->
                 updateState { copy(isObjectDetailLoading = isLoading) }
+            },
+            onError = { exception ->
+                updateState {
+                    copy(serverError = exception.message)
+                }
             }
         )
     }

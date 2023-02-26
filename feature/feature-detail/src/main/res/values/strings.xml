@@ -2,7 +2,8 @@
 <resources>
     <string name="title_detail">Detail</string>
 
-    <string name="label_internet_problem_massage">Internet problem, tap to try again</string>
+    <string name="label_internet_problem_message">Internet problem, tap to try again</string>
+    <string name="label_server_problem_message">Error happened: %1$s</string>
     <string name="label_department">Department</string>
     <string name="label_artist_name">Artist Name</string>
     <string name="label_accession_number">Accession Number</string>

@@ -1,7 +1,7 @@
-package com.solidict.ui.text_field_util.condition_validator
+package com.example.ui.text_field_util
 
 class TextFieldStateValidator(
-    val errorMassage: String,
+    val errorMessage: String,
     private val condition: (String) -> Boolean
 ) {
 
