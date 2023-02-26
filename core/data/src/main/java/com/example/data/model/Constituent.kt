@@ -1,5 +1,8 @@
 package com.example.data.model
 
+import androidx.annotation.Keep
+
+@Keep
 data class Constituent(
     val constituentID: Int,
     val constituentULAN_URL: String,
