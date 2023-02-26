@@ -15,7 +15,7 @@ fun AppNavGraph(
 ) {
     NavHost(
         navController = navController,
-        startDestination = searchNavigationRoute,
+        startDestination = searchNavigationRoute
     ) {
         searchNavGraph { id ->
             navController.navigate(
