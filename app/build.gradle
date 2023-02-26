@@ -3,6 +3,7 @@ plugins {
     id 'org.jetbrains.kotlin.android'
     id 'kotlin-kapt'
     id 'dagger.hilt.android.plugin'
+    id "org.jlleitschuh.gradle.ktlint" version "11.2.0"
 }
 
 android {
@@ -60,6 +61,19 @@ android {
             excludes.add("/META-INF/LICENSE.md")
             excludes.add("/META-INF/LICENSE-notice.md")
         }
+    }
+}
+
+tasks.getByPath("preBuild").dependsOn("ktlintFormat")
+
+ktlint {
+    android = true
+    ignoreFailures = false
+    disabledRules = ["final-newline", "no-wildcard-imports"]
+    reporters {
+        reporter "plain"
+        reporter "checkstyle"
+        reporter "sarif"
     }
 }
 

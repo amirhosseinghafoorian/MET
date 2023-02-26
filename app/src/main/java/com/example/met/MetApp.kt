@@ -9,7 +9,7 @@ import com.google.accompanist.systemuicontroller.rememberSystemUiController
 
 @Composable
 fun MetApp(
-    windowSizeClass: WindowSizeClass,
+    windowSizeClass: WindowSizeClass
 ) {
     MetTheme(windowSizeClass) {
         val systemUiController = rememberSystemUiController()
