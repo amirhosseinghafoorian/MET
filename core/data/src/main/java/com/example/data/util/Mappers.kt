@@ -13,16 +13,16 @@ fun SearchObjectsResponse.toSearchObjects(): SearchObjects {
 
 fun GetObjectDetailResponse.toObjectDetail(): ObjectDetail {
     return ObjectDetail(
-        name = objectName,
-        imageUrl = primaryImage.ifEmpty { null },
-        department = department,
-        artistName = artistDisplayName,
-        additionalImageUrls = additionalImages.ifEmpty { null },
-        accessionNumber = accessionNumber,
-        accessionYear = accessionYear,
-        artistRole = artistRole,
-        classification = classification,
-        title = title,
-        repository = repository
+        name = objectName ?: "",
+        imageUrl = primaryImage?.ifEmpty { null },
+        department = department ?: "",
+        artistName = artistDisplayName ?: "",
+        additionalImageUrls = additionalImages?.ifEmpty { null },
+        accessionNumber = accessionNumber ?: "",
+        accessionYear = accessionYear ?: "",
+        artistRole = artistRole ?: "",
+        classification = classification ?: "",
+        title = title ?: "",
+        repository = repository ?: ""
     )
 }
