@@ -11,6 +11,7 @@ Museum of Art (MET) using their public API.
 - Adaptive Layout
 - Kotlin Coroutines
 - Kotlin Flows
+- Hilt
 - Retrofit
 - Gson
 - ktlint
