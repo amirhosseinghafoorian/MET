@@ -48,8 +48,14 @@ dependencies {
 
     // Retrofit
     implementation libs.retrofit
-    implementation libs.converter.gson
 
     // Interceptor
     implementation libs.logging.interceptor
+
+    // moshi
+    implementation libs.moshi.kotlin
+    implementation libs.moshi
+
+    // moshi converter
+    implementation libs.converter.moshi
 }

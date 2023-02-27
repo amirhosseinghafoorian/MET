@@ -13,7 +13,7 @@ Museum of Art (MET) using their public API.
 - Kotlin Flows
 - Hilt
 - Retrofit
-- Gson
+- Moshi
 - ktlint
 - TOML
 - JUnit4

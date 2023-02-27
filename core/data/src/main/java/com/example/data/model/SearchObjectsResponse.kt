@@ -4,6 +4,6 @@ import androidx.annotation.Keep
 
 @Keep
 data class SearchObjectsResponse(
-    val objectIDs: List<Int>,
-    val total: Int
+    val objectIDs: List<Int>?,
+    val total: Int?
 )
