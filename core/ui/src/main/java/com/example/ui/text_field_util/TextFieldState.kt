@@ -3,7 +3,6 @@ package com.example.ui.text_field_util
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
-import com.example.common.firstONull
 
 abstract class TextFieldState {
 
@@ -14,7 +13,7 @@ abstract class TextFieldState {
     private val validators = mutableListOf<TextFieldStateValidator>()
 
     open fun validate(): Boolean {
-        errorMessage = validators.firstONull { validator ->
+        errorMessage = validators.firstOrNull { validator ->
             !validator.validate(text)
         }?.errorMessage
 

@@ -139,15 +139,7 @@ internal fun SearchScreen(
 
         if (uiState.isSearchLoading) {
             item(span = { GridItemSpan(maxLineSpan) }) {
-                Box(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .height(MaterialTheme.sizing.medium)
-                        .testTag(stringResource(R.string.tag_loading)),
-                    contentAlignment = Alignment.Center
-                ) {
-                    CircularProgressIndicator()
-                }
+                LoadingBox()
             }
         } else {
             items(
@@ -208,15 +200,7 @@ internal fun SearchScreenLarge(
 
         if (uiState.isSearchLoading) {
             item(span = { GridItemSpan(maxLineSpan) }) {
-                Box(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .height(MaterialTheme.sizing.medium)
-                        .testTag(stringResource(R.string.tag_loading)),
-                    contentAlignment = Alignment.Center
-                ) {
-                    CircularProgressIndicator()
-                }
+                LoadingBox()
             }
         } else {
             items(
@@ -251,5 +235,18 @@ private fun ObjectIdItem(
             style = MaterialTheme.typography.h6,
             fontWeight = FontWeight.Bold
         )
+    }
+}
+
+@Composable
+private fun LoadingBox(){
+    Box(
+        modifier = Modifier
+            .fillMaxWidth()
+            .height(MaterialTheme.sizing.medium)
+            .testTag(stringResource(R.string.tag_loading)),
+        contentAlignment = Alignment.Center
+    ) {
+        CircularProgressIndicator()
     }
 }
