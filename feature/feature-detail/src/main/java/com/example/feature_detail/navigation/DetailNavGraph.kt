@@ -1,9 +1,11 @@
 package com.example.feature_detail.navigation
 
+import androidx.compose.foundation.layout.padding
 import androidx.compose.material.Scaffold
 import androidx.compose.material.rememberScaffoldState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.ui.Modifier
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
@@ -73,8 +75,9 @@ fun DetailHost(
                 }
             )
         }
-    ) {
+    ) { padding ->
         NavHost(
+            modifier = Modifier.padding(padding),
             navController = baseState.navController,
             startDestination = DetailScreenRoute.route,
         ) {

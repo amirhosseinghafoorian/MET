@@ -107,19 +107,7 @@ internal fun DetailScreenSmall(
     onAction: (DetailAction) -> Unit,
 ) {
     uiState.serverError?.let { error ->
-        Box(
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(MaterialTheme.spacing.medium),
-            contentAlignment = Alignment.Center
-        ) {
-            Text(
-                text = stringResource(R.string.label_server_problem_message, error),
-                color = MaterialTheme.colors.onBackground,
-                style = MaterialTheme.typography.body1,
-                textAlign = TextAlign.Center
-            )
-        }
+        ServerErrorBox(error)
     } ?: run {
         uiState.objectDetail?.let { detail ->
             val showHeaderSection by derivedStateOf {
@@ -247,31 +235,8 @@ internal fun DetailScreenSmall(
                 }
             }
         } ?: run {
-            Box(
-                modifier = Modifier.fillMaxSize(),
-                contentAlignment = Alignment.Center
-            ) {
-                Box(
-                    modifier = Modifier
-                        .clip(MaterialTheme.shapes.large)
-                        .border(
-                            width = 1.dp,
-                            color = MaterialTheme.colors.onBackground,
-                            shape = MaterialTheme.shapes.large
-                        )
-                        .clickable { onAction(TryAgain) }
-                        .padding(
-                            vertical = MaterialTheme.spacing.small,
-                            horizontal = MaterialTheme.spacing.medium
-                        ),
-                    contentAlignment = Alignment.Center
-                ) {
-                    Text(
-                        text = stringResource(R.string.label_internet_problem_message),
-                        color = MaterialTheme.colors.onBackground,
-                        style = MaterialTheme.typography.body1
-                    )
-                }
+            InternetErrorBox {
+                onAction(TryAgain)
             }
         }
     }
@@ -283,19 +248,7 @@ internal fun DetailScreenMedium(
     onAction: (DetailAction) -> Unit,
 ) {
     uiState.serverError?.let { error ->
-        Box(
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(MaterialTheme.spacing.medium),
-            contentAlignment = Alignment.Center
-        ) {
-            Text(
-                text = stringResource(R.string.label_server_problem_message, error),
-                color = MaterialTheme.colors.onBackground,
-                style = MaterialTheme.typography.h6,
-                textAlign = TextAlign.Center
-            )
-        }
+        ServerErrorBox(error)
     } ?: run {
         uiState.objectDetail?.let { detail ->
             val showHeaderSection by derivedStateOf {
@@ -430,31 +383,8 @@ internal fun DetailScreenMedium(
                 }
             }
         } ?: run {
-            Box(
-                modifier = Modifier.fillMaxSize(),
-                contentAlignment = Alignment.Center
-            ) {
-                Box(
-                    modifier = Modifier
-                        .clip(MaterialTheme.shapes.large)
-                        .border(
-                            width = 1.dp,
-                            color = MaterialTheme.colors.onBackground,
-                            shape = MaterialTheme.shapes.large
-                        )
-                        .clickable { onAction(TryAgain) }
-                        .padding(
-                            vertical = MaterialTheme.spacing.small,
-                            horizontal = MaterialTheme.spacing.medium
-                        ),
-                    contentAlignment = Alignment.Center
-                ) {
-                    Text(
-                        text = stringResource(R.string.label_internet_problem_message),
-                        color = MaterialTheme.colors.onBackground,
-                        style = MaterialTheme.typography.h6
-                    )
-                }
+            InternetErrorBox {
+                onAction(TryAgain)
             }
         }
     }
@@ -466,19 +396,7 @@ internal fun DetailScreenLarge(
     onAction: (DetailAction) -> Unit,
 ) {
     uiState.serverError?.let { error ->
-        Box(
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(MaterialTheme.spacing.medium),
-            contentAlignment = Alignment.Center
-        ) {
-            Text(
-                text = stringResource(R.string.label_server_problem_message, error),
-                color = MaterialTheme.colors.onBackground,
-                style = MaterialTheme.typography.h5,
-                textAlign = TextAlign.Center
-            )
-        }
+        ServerErrorBox(error)
     } ?: run {
         uiState.objectDetail?.let { detail ->
             val showHeaderSection by derivedStateOf {
@@ -613,31 +531,8 @@ internal fun DetailScreenLarge(
                 }
             }
         } ?: run {
-            Box(
-                modifier = Modifier.fillMaxSize(),
-                contentAlignment = Alignment.Center
-            ) {
-                Box(
-                    modifier = Modifier
-                        .clip(MaterialTheme.shapes.large)
-                        .border(
-                            width = 1.dp,
-                            color = MaterialTheme.colors.onBackground,
-                            shape = MaterialTheme.shapes.large
-                        )
-                        .clickable { onAction(TryAgain) }
-                        .padding(
-                            vertical = MaterialTheme.spacing.small,
-                            horizontal = MaterialTheme.spacing.medium
-                        ),
-                    contentAlignment = Alignment.Center
-                ) {
-                    Text(
-                        text = stringResource(R.string.label_internet_problem_message),
-                        color = MaterialTheme.colors.onBackground,
-                        style = MaterialTheme.typography.h5
-                    )
-                }
+            InternetErrorBox {
+                onAction(TryAgain)
             }
         }
     }
@@ -1033,5 +928,54 @@ private fun DetailItemShimmer() {
                 .clip(MaterialTheme.shapes.medium)
                 .dynamicShimmer(),
         )
+    }
+}
+
+@Composable
+fun ServerErrorBox(errorMessage : String) {
+    Box(
+        modifier = Modifier
+            .fillMaxSize()
+            .padding(MaterialTheme.spacing.medium),
+        contentAlignment = Alignment.Center
+    ) {
+        Text(
+            text = stringResource(R.string.label_server_problem_message, errorMessage),
+            color = MaterialTheme.colors.onBackground,
+            style = MaterialTheme.typography.body1,
+            textAlign = TextAlign.Center
+        )
+    }
+}
+
+@Composable
+fun InternetErrorBox(
+    onTryAgain: () -> Unit
+) {
+    Box(
+        modifier = Modifier.fillMaxSize(),
+        contentAlignment = Alignment.Center
+    ) {
+        Box(
+            modifier = Modifier
+                .clip(MaterialTheme.shapes.large)
+                .border(
+                    width = 1.dp,
+                    color = MaterialTheme.colors.onBackground,
+                    shape = MaterialTheme.shapes.large
+                )
+                .clickable { onTryAgain() }
+                .padding(
+                    vertical = MaterialTheme.spacing.small,
+                    horizontal = MaterialTheme.spacing.medium
+                ),
+            contentAlignment = Alignment.Center
+        ) {
+            Text(
+                text = stringResource(R.string.label_internet_problem_message),
+                color = MaterialTheme.colors.onBackground,
+                style = MaterialTheme.typography.body1
+            )
+        }
     }
 }
