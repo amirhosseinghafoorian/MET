@@ -12,6 +12,7 @@ Museum of Art (MET) using their public API.
 - Kotlin Coroutines
 - Kotlin Flows
 - Hilt
+- Coil
 - Retrofit
 - Moshi
 - ktlint
