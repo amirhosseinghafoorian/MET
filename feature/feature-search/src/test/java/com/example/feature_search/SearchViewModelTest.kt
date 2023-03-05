@@ -7,10 +7,11 @@ import com.example.feature_search.search.SearchAction.OnUpdateTextField
 import com.example.feature_search.search.SearchViewModel
 import com.example.testing.MainDispatcherRule
 import com.example.testing.shouldBeEqualTo
+import io.mockk.Called
 import io.mockk.MockKAnnotations
 import io.mockk.coEvery
 import io.mockk.coVerify
-import io.mockk.impl.annotations.RelaxedMockK
+import io.mockk.impl.annotations.MockK
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.test.runTest
@@ -29,7 +30,7 @@ class SearchViewModelTest {
     @JvmField
     val instantExecutorRule = InstantTaskExecutorRule()
 
-    @RelaxedMockK
+    @MockK
     lateinit var searchObjectsUseCase: SearchObjectsUseCase
 
     private lateinit var viewModel: SearchViewModel
@@ -59,13 +60,13 @@ class SearchViewModelTest {
         viewModel.uiState.value.objectIds shouldBeEqualTo listOf()
         viewModel.uiState.value.isSearchLoading shouldBeEqualTo false
 
-        coVerify(exactly = 0) {
-            searchObjectsUseCase(any())
+        coVerify {
+            searchObjectsUseCase wasNot Called
         }
     }
 
     @Test
-    fun whenTextFieldIsValid_objectIdsAreEmptyBeforeDelay() = runTest {
+    fun whenTextFieldIsValid_objectIdsAreEmptyBeforeDelay() {
         coEvery { searchObjectsUseCase(any()) } returns SearchObjects(listOf(1, 2, 3))
         viewModel = createViewModel()
 
@@ -79,8 +80,8 @@ class SearchViewModelTest {
         viewModel.uiState.value.objectIds shouldBeEqualTo listOf()
         viewModel.uiState.value.isSearchLoading shouldBeEqualTo true
 
-        coVerify(exactly = 0) {
-            searchObjectsUseCase("flower")
+        coVerify {
+            searchObjectsUseCase wasNot Called
         }
     }
 
