@@ -11,11 +11,9 @@ import com.example.testing.MainDispatcherRule
 import com.example.testing.shouldBeEqualTo
 import io.mockk.MockKAnnotations
 import io.mockk.coEvery
-import io.mockk.coJustRun
 import io.mockk.coVerify
 import io.mockk.impl.annotations.RelaxedMockK
 import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.test.runTest
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
@@ -42,14 +40,14 @@ class DetailViewModelTest {
     }
 
     @Test
-    fun whenObjectIdIsNotPassed_showUnknownError() = runTest {
+    fun whenObjectIdIsNotPassed_showUnknownError() {
         viewModel = createViewModel()
 
         viewModel.uiState.value.isUnknownError shouldBeEqualTo true
     }
 
     @Test
-    fun whenObjectIdIsPassed_objectIdIsSet() = runTest {
+    fun whenObjectIdIsPassed_objectIdIsSet() {
         viewModel = createViewModel(5)
 
         viewModel.uiState.value.isUnknownError shouldBeEqualTo false
@@ -57,7 +55,7 @@ class DetailViewModelTest {
     }
 
     @Test
-    fun whenObjectIdIsPassed_objectDetailIsReceived() = runTest {
+    fun whenObjectIdIsPassed_objectDetailIsReceived() {
         val testCase = ObjectDetail(
             name = "some object",
             imageUrl = null,
@@ -82,8 +80,7 @@ class DetailViewModelTest {
     }
 
     @Test
-    fun onTryAgain_getObjectDetailIsCalledAgain() = runTest {
-        coJustRun { getObjectDetailUseCase(any()) }
+    fun onTryAgain_getObjectDetailIsCalledAgain() {
         viewModel = createViewModel(5)
 
         viewModel.submitAction(TryAgain)
